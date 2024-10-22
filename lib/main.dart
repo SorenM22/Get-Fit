@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'GetFit',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: ''),
     );
   }
 }
@@ -56,6 +56,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _selectedPage = 0;
+  String _username = 'USER NAME';
 
   void _incrementCounter() {
     setState(() {
@@ -68,6 +70,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _tappedPageSelect(int index) {
+    setState(() {
+      _selectedPage = index;
+    });
+  }
+
+  void _pressedAccountButton() {
+    throw UnimplementedError("Unimplemented _pressedAccountButton");
+  }
+
+  void _pressedAddButton() {
+    throw UnimplementedError("Unimplemented _pressedAccountButton");
+  }
+  
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -85,6 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        leading: TextButton(
+            onPressed: _pressedAccountButton,
+            child: Text(_username),
+            isSemanticButton: true,),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -115,11 +135,33 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        tooltip: 'Add Stuff',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.auto_graph_rounded),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'settings',
+          ),
+        ],
+          currentIndex: _selectedPage,
+          selectedItemColor: Theme.of(context).primaryColor,
+          onTap: _tappedPageSelect
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

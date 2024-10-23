@@ -101,17 +101,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
             // switch between Goal page and Workout Page
             _selectedWorkoutOrGoal == 0
-                ? Text("Goal Page", style: TextStyle(fontSize: 24))
-                : Text("Workout Page", style: TextStyle(fontSize: 24)),
-
-            // button pushed page
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+                  // Goal Page
+                ? Column(
+                    children: <Widget> [
+                      Text("Goal Page", style: TextStyle(fontSize: 24)),
+                      Text("Goal Page", style: TextStyle(fontSize: 24))
+                      ]
+                    )
+                  // Workout Page
+                : Column(
+                children: <Widget> [
+                  Text("Workout Page", style: TextStyle(fontSize: 24)),
+                  Text("Workout Page", style: TextStyle(fontSize: 24))
+                ]
+            )
           ],
         ),
       ),

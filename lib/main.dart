@@ -99,7 +99,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ? Column(
                     children: <Widget> [
                       Text("Goal Page", style: TextStyle(fontSize: 24)),
-                      Text("Goal Page", style: TextStyle(fontSize: 24))
+                      Text("Running Page", style: TextStyle(fontSize: 20)),
+                      Text("Miles Ran: ", style: TextStyle(fontSize: 18)),
+                      Text("Lifting Page", style: TextStyle(fontSize: 20)),
+                      Text("Max lift on Bench: ", style: TextStyle(fontSize: 18))
                       ]
                     )
                   // Workout Page

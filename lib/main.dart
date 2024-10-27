@@ -1,3 +1,4 @@
+import 'package:ctrl_alt_defeat/goal_workout_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -35,17 +36,9 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   int _selectedPage = 0;
   int _selectedWorkoutOrGoal = 0;
   String _username = 'USER NAME';
-
-  void _incrementCounter() {
-    setState(() {
-
-      _counter++;
-    });
-  }
 
   void _tappedPageSelect(int index) {
     setState(() {
@@ -78,49 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Text(_username),
             isSemanticButton: true,),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-
-            NavigationBar(
-              destinations: [
-                NavigationDestination(icon: Text("Goal"), label: ""),
-                NavigationDestination(icon: Text("Workout"), label: ""),
-              ],
-              backgroundColor: Colors.white,
-              selectedIndex: _selectedWorkoutOrGoal,
-              onDestinationSelected: _pressedWorkoutOrGoal,
-            ),
-
-            // switch between Goal page and Workout Page
-            _selectedWorkoutOrGoal == 0
-                  // Goal Page
-                ? Column(
-                    children: <Widget> [
-                      Text("Goal Page", style: TextStyle(fontSize: 24)),
-                      Text("Running Page", style: TextStyle(fontSize: 20)),
-                      Text("Miles Ran: ", style: TextStyle(fontSize: 18)),
-                      Text("Lifting Page", style: TextStyle(fontSize: 20)),
-                      Text("Max lift on Bench: ", style: TextStyle(fontSize: 18))
-                      ]
-                    )
-                  // Workout Page
-                : Column(
-                children: <Widget> [
-                  Text("Workout Page", style: TextStyle(fontSize: 24)),
-                  Text("Workout Page", style: TextStyle(fontSize: 24))
-                ]
-            )
-          ],
-        ),
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Add Stuff',
-        child: const Icon(Icons.add),
-      ),
+      body: GoalWorkoutPage(title: "Goal/Workout"),
 
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

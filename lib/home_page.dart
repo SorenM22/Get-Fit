@@ -1,3 +1,4 @@
+import 'package:ctrl_alt_defeat/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/goal_workout_page.dart';
 
@@ -17,9 +18,21 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedWorkoutOrGoal = 0;
   String _username = 'USER NAME';
 
+  Widget homeContentWindow = GoalWorkoutPage(title: "Goal/Workout Page");
+
   void _tappedPageSelect(int index) {
     setState(() {
       _selectedPage = index;
+
+      switch (index){
+        case 2:
+          homeContentWindow = Text("SETTINGS PAGE");
+        case 1:
+          homeContentWindow = HistoryPage(title: "History Page");
+        default:
+          homeContentWindow = GoalWorkoutPage(title: "Goal/Workout Page");
+      }
+
     });
   }
 
@@ -48,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Text(_username),
           isSemanticButton: true,),
       ),
-      body: GoalWorkoutPage(title: "Goal/Workout"),
+      body: homeContentWindow,
 
       bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[

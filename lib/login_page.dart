@@ -72,7 +72,7 @@ class LoginPage extends StatelessWidget {
                                   backgroundColor: Colors.black54,
                                   foregroundColor: Colors.white),
                               child: Text("Let Me In")
-                              )
+                              ),
                           ),
                         ],
                       ),
@@ -85,6 +85,26 @@ class LoginPage extends StatelessWidget {
                       icon: Image(image: AssetImage("assets/login_Image/Google_Logo.png"), width: 25.0),
                       onPressed: (){},
                       label: Text("Google sign-in")),
+                ),
+
+                SizedBox(
+                  height: 30.0,
+                ),
+
+                TextButton(
+                    onPressed: (){},
+                    child: Text.rich(
+                      TextSpan(
+                        text: "Don't have an Account? ",
+                        style: Theme.of(context).textTheme.bodySmall,
+                        children: const [
+                          TextSpan(
+                            text: "Signup",
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ],
+                      ),
+                    ),
                 ),
               ],
             ),

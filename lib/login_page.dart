@@ -8,6 +8,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
@@ -21,9 +22,9 @@ class LoginPage extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.all(30),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image(image: AssetImage(loginImage)),
+                Image(image: AssetImage(loginImage), height: height * 0.2,),
                 const Text("testDescription"),
                 const Text("subTitle"),
 
@@ -58,12 +59,32 @@ class LoginPage extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                              onPressed: (){}, child: const Text("Forgot Password")),
+                              onPressed: (){},
+                                child: const Text("Forgot Password"),
+                                style: TextButton.styleFrom(foregroundColor: Colors.blueAccent)
+                            ),
                           ),
-                          ElevatedButton(onPressed: (){}, child: Text("Let Me In"))
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: (){},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black54,
+                                  foregroundColor: Colors.white),
+                              child: Text("Let Me In")
+                              )
+                          ),
                         ],
                       ),
                     ),
+                ),
+                const Text("OR"),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                      icon: Image(image: AssetImage("assets/login_Image/Google_Logo.png"), width: 25.0),
+                      onPressed: (){},
+                      label: Text("Google sign-in")),
                 ),
               ],
             ),

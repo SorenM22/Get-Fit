@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ctrl_alt_defeat/signup_page.dart';
+
 
 
 class LoginPage extends StatelessWidget {
@@ -92,7 +94,15 @@ class LoginPage extends StatelessWidget {
                 ),
 
                 TextButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context, MaterialPageRoute(builder: (context) {
+                        return SignupPage();
+                      },
+                      ),
+                      );
+                    },
                     child: Text.rich(
                       TextSpan(
                         text: "Don't have an Account? ",

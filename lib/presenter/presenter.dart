@@ -4,7 +4,7 @@ import 'package:ctrl_alt_defeat/views/view.dart';
 //The inbetween
 class Presenter {
   Presenter();
-  void buttonPushed() {
+  void profileButtonPushed() {
     throw UnimplementedError("Unimplemented _pressedAccountButton");
   }
 }

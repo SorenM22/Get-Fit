@@ -1,3 +1,4 @@
+import 'package:ctrl_alt_defeat/login_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -50,11 +51,18 @@ class AuthenticationPage extends StatelessWidget {
             Row(
               children:[
                 Expanded(child: OutlinedButton(
-                  onPressed: (){},
+                  onPressed: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) {
+                          return LoginPage();
+                          },
+                        ),
+                    );
+
+                  },
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(),
                     foregroundColor: Color(0xFF272727),
-                    backgroundColor: Color(0XFFb7f2f1),
                     side: BorderSide(color: Color(0xFF272727)),
                     padding: EdgeInsets.symmetric(vertical:30),
                 ), child: const Text("Login")),),

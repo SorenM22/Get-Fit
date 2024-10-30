@@ -38,7 +38,21 @@ class SignupPage extends StatelessWidget {
                                 borderSide: BorderSide(width: 1.7, color: Colors.grey),
                               )
                             ),
-                        )
+                        ),
+
+                          TextFormField(
+                            decoration: InputDecoration(
+                              label: Text("Email"),
+                              prefixIcon: Icon(
+                                Icons.mail_outline_sharp,
+                                color: Colors.grey
+                              ),
+                              labelStyle: TextStyle(color: Colors.grey),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(width: 1.7, color: Colors.grey),
+                              )
+                            ),
+                          ),
                         ],
                       ),
                     )

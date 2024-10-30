@@ -53,6 +53,20 @@ class SignupPage extends StatelessWidget {
                               )
                             ),
                           ),
+
+                          TextFormField(
+                            decoration: InputDecoration(
+                              label: Text("Password"),
+                              prefixIcon: Icon(
+                                Icons.key,
+                                color: Colors.grey
+                              ),
+                              labelStyle: TextStyle(color: Colors.grey),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(width: 1.7, color: Colors.grey),
+                              )
+                            )
+                          )
                         ],
                       ),
                     )

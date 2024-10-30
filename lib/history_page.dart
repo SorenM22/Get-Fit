@@ -1,25 +1,71 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key, required this.title});
+
   final String title;
 
-  static const List<String> items = ['0', '1', '2', '3', '4'];
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print("couldnt connect");
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const HistoryPageImplementation(title: 'Workout History Page');
+          }
+          Widget loading = const MaterialApp();
+          return loading;
+    });
+  }
+}
+
+class HistoryPageImplementation extends StatefulWidget {
+  const HistoryPageImplementation({super.key, required this.title});
+  final String title;
+
+  @override
+  State<HistoryPageImplementation> createState() => _HistoryPageState();
+}
+class _HistoryPageState extends State<HistoryPageImplementation> {
+  final db = FirebaseFirestore.instance.collection('User_Data');
+
+  List<Widget> items = [];
+
+  Future<void> retrieveData() async {
+    QuerySnapshot data = await db.get();
+    data.docs.asMap().forEach((key, value) {
+      final nameData = value.get('Name');
+      items.add(ListItem(name: nameData));
+    });
+    setState(() {
+
+    });
+  }
+
+  @override void initState() {
+    super.initState();
+    retrieveData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: ListItem(name: items[index]),
-          );
-        },
-      )
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: items[index],
+            );
+          },
+        )
     );
   }
 }

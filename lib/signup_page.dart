@@ -66,7 +66,22 @@ class SignupPage extends StatelessWidget {
                                 borderSide: BorderSide(width: 1.7, color: Colors.grey),
                               )
                             )
-                          )
+                          ),
+
+                              SizedBox(
+                                height: 25,
+                              ),
+
+                              Align(
+                                alignment: Alignment.center,
+                                child: SizedBox(
+                                  width: 150,
+                                  child: OutlinedButton(onPressed: (){},
+                                      child: Text("Sign up")
+                                  ),
+                                ),
+                              ),
+
                         ],
                       ),
                     )
@@ -88,10 +103,10 @@ class signupForm extends StatelessWidget {
 Widget build(BuildContext context) {
 
     return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image(image: AssetImage("assets/login_Image/Workout_ClipArt.jpg")),
-        Text("test"),
+        Text("All fields are required", style: TextStyle(fontSize: 20),),
       ],
     );
 }

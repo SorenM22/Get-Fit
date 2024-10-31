@@ -27,8 +27,8 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image(image: AssetImage(loginImage), height: height * 0.2,),
-                const Text("testDescription"),
-                const Text("subTitle"),
+                const Text("MyFit", style: TextStyle(fontSize: 35),),
+                const Text("please login", style: TextStyle(fontSize: 15),),
 
                 Form(
                     child: Container(

@@ -46,8 +46,10 @@ class AuthenticationPage extends StatelessWidget {
               Image(image: AssetImage(loginImage), height: height * 0.6),
                const Column(
                   children: [
-                   Text("Login page in progress", textAlign: TextAlign.center,),
-                   Text("May you have many wonderful workouts in the future", textAlign: TextAlign.center,),
+                   Text("Welcome to MyFit!", textAlign: TextAlign.center, style: TextStyle(fontSize: 40),),
+                   Text("The best place to record all your workouts \n May you have many wonderful workouts in the future",
+                     textAlign: TextAlign.center,
+                     style: TextStyle(fontSize: 15),),
                  ],
               ),
               Row(

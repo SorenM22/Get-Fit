@@ -1,3 +1,4 @@
+import 'package:ctrl_alt_defeat/GoalPage.dart';
 import 'package:flutter/material.dart';
 
 class GoalWorkoutPage extends StatefulWidget {
@@ -42,15 +43,7 @@ class _GoalWorkoutState extends State<GoalWorkoutPage> {
             // switch between Goal page and Workout Page
             _selectedWorkoutOrGoal == 0
             // Goal Page
-                ? Column(
-                children: <Widget> [
-                  Text("Goal Page", style: TextStyle(fontSize: 24)),
-                  Text("Running Page", style: TextStyle(fontSize: 20)),
-                  Text("Miles Ran: ", style: TextStyle(fontSize: 18)),
-                  Text("Lifting Page", style: TextStyle(fontSize: 20)),
-                  Text("Max lift on Bench: ", style: TextStyle(fontSize: 18))
-                ]
-            )
+                ? GoalPage()
             // Workout Page
                 : Column(
                 children: <Widget> [

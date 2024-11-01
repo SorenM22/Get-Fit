@@ -3,6 +3,7 @@ import 'package:ctrl_alt_defeat/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,8 +15,15 @@ Future <void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
+  Widget build(BuildContext context){
+    return GetMaterialApp(
+      home: AuthenticationPage(),
+    );
+  }
+
+  // This widget is the root of your application.
+ /* @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
@@ -26,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const AuthenticationPage(),
     );
-  }
+  }*/
 }
 
 class AuthenticationPage extends StatelessWidget {
@@ -57,15 +65,14 @@ class AuthenticationPage extends StatelessWidget {
               Row(
                 children:[
                   Expanded(child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) {
-                            return LoginPage();
-                            },
+                    onPressed: () => Get.to(() => const LoginPage()),
+
+                     /* Navigator.push(context, MaterialPageRoute(builder: (context) {return LoginPage();},
+
                           ),
-                      );
+                      );*/
       
-                    },
+
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(),
                       foregroundColor: Color(0xFF272727),
@@ -76,14 +83,14 @@ class AuthenticationPage extends StatelessWidget {
                     width: 10.0,
                   ),
                   Expanded(child: ElevatedButton(
-                      onPressed: (){
+                      onPressed: () => Get.to(() => const SignupPage()), /*{
                         Navigator.push(
                           context, MaterialPageRoute(builder: (context) {
                           return SignupPage();
                         },
                         ),
                         );
-                      },
+                      },*/
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(),
                         foregroundColor: Color(0xFF434343),

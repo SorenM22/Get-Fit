@@ -1,9 +1,12 @@
 import 'package:ctrl_alt_defeat/login_page.dart';
 import 'package:ctrl_alt_defeat/signup_page.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future <void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 

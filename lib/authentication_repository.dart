@@ -19,4 +19,14 @@ class AuthenticationRepository extends GetxController {
   createScreen(User? user) {
     user == null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
   }
+
+  Future <void> createUserFromSignUpPrompts (String name, String email, String password) async {
+    try {
+      await auth.createUserWithEmailAndPassword(email: email, password: password);
+      firebaseUser.value != null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
+
+    } on FirebaseAuthException catch(e){
+    } catch(_){}
+  }
+
 }

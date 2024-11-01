@@ -24,15 +24,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const AuthenticationPage(title: 'Flutter Auth'),
+      home: const AuthenticationPage(),
     );
   }
 }
 
 class AuthenticationPage extends StatelessWidget {
 
-  const AuthenticationPage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const AuthenticationPage({Key? key}) : super(key: key);
   final String loginImage = "assets/login_Image/Workout_ClipArt.jpg";
   
 

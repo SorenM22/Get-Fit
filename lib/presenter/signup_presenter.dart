@@ -21,6 +21,7 @@ class signupPresenter extends GetxController {
   
   Future<void> createUser(UserModel user) async {
     await userRepo.createUser(user);
+    registerUser(user.name, user.email, user.password);
   }
 
 }

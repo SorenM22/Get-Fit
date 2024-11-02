@@ -14,7 +14,6 @@ class UserRepository extends GetxController{
       print(error.toString());
     });
 
-
   }
 
 }

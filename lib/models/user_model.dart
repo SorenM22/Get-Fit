@@ -14,8 +14,8 @@ class UserModel {
   userDataToJson(){
     return{
       "Name": name,
-      // "Email": email,
-      // "Password": password
+      "Email": email,
+      "Password": password
     };
   }
 

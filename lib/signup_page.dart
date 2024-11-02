@@ -125,7 +125,7 @@ class signupInputFields extends StatelessWidget {
                   child: OutlinedButton(
                       onPressed: (){
                         if(_formKey.currentState!.validate()){
-                          signupPresenter.instance.registerUser(authControl.name.text.trim(), authControl.email.text.trim(), authControl.password.text.trim());
+                          // signupPresenter.instance.registerUser(authControl.name.text.trim(), authControl.email.text.trim(), authControl.password.text.trim());
 
                           final user = UserModel(
                               name: authControl.name.text.trim(),

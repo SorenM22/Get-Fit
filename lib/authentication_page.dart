@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:ctrl_alt_defeat/authentication_repository.dart';
 import 'package:ctrl_alt_defeat/login_page.dart';
 import 'package:ctrl_alt_defeat/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +10,8 @@ import 'package:get/get.dart';
 
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  Firebase.initializeApp().then((value) => Get.put(AuthenticationRepository()));
+  //Get.put(AuthenticationRepository());
   runApp(const MyApp());
 }
 

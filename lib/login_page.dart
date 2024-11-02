@@ -38,6 +38,7 @@ class LoginPage extends StatelessWidget {
                 const Text("please login", style: TextStyle(fontSize: 15),),
 
                 Form(
+                  key: _formKey,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Column(

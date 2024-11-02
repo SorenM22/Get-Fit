@@ -1,45 +1,33 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:ctrl_alt_defeat/workout_initial_page.dart';
+import 'package:ctrl_alt_defeat/workout_input_page.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class WorkoutPage extends StatelessWidget {
-  const WorkoutPage({super.key, required this.title});
-
-  final String title;
+class WorkoutPage extends StatefulWidget {
+  const WorkoutPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return const WorkoutPageImplementation(title: 'Workout Page');
-        }
-        Widget loading = const MaterialApp();
-        return loading;
-      });
-  }
+  State<WorkoutPage> createState() => _WorkoutPage();
 }
 
-class WorkoutPageImplementation extends StatefulWidget {
-  const WorkoutPageImplementation({super.key, required this.title});
-  final String title;
+class _WorkoutPage extends State<WorkoutPage>{
+  int pageType = 0;
 
-  @override
-  State<StatefulWidget> createState() => _WorkoutPageState();
-}
-
-class _WorkoutPageState extends State<WorkoutPageImplementation> {
-  final db = FirebaseFirestore.instance.collection('User_Data');
-
-  @override void initState() {
-    super.initState();
+  void navigateToInput() {
+    setState(() {
+      pageType = 1;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: const Text("placeholder")
+      body: pageType == 0 ? const WorkoutInitialPage() : const WorkoutInputPage(),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: navigateToInput,
+        tooltip: 'Add Stuff',
+        child: const Icon(Icons.add),
+      )
     );
   }
 }

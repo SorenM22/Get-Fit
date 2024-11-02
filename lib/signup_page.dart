@@ -1,3 +1,4 @@
+import 'package:ctrl_alt_defeat/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'presenter/signup_presenter.dart';
 import 'package:get/get.dart';
@@ -125,6 +126,15 @@ class signupInputFields extends StatelessWidget {
                       onPressed: (){
                         if(_formKey.currentState!.validate()){
                           signupPresenter.instance.registerUser(authControl.name.text.trim(), authControl.email.text.trim(), authControl.password.text.trim());
+
+                          final user = UserModel(
+                              name: authControl.name.text.trim(),
+                              email: authControl.email.text.trim(),
+                              password: authControl.password.text.trim(),
+                          );
+
+                          signupPresenter.instance.createUser(user);
+
                         }
                       },
                       child: Text("Sign up")

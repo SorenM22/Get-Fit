@@ -23,8 +23,8 @@ class AuthenticationRepository extends GetxController {
 
   Future <void> createUserFromSignUpPrompts (String name, String email, String password) async {
     try {
-      await auth.createUserWithEmailAndPassword(email: email, password: password);
-      firebaseUser.value != null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
+      await auth.createUserWithEmailAndPassword(email: email, password: password).then(
+          createScreen(firebaseUser.value));
 
     } on FirebaseAuthException catch(e){
     } catch(_){}
@@ -33,8 +33,7 @@ class AuthenticationRepository extends GetxController {
   Future <void> loginWithEmailandPass (String email, String password) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password).then(createScreen(firebaseUser.value));
-      print("gets here");
-      // createScreen(firebaseUser.value);
+
     } on FirebaseAuthException catch(e){
     } catch(_){}
   }

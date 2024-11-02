@@ -44,6 +44,7 @@ class LoginPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextFormField(
+                            controller: authControl.email,
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.person_outline_outlined),
                               labelText: "E-mail",
@@ -53,6 +54,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
+                            controller: authControl.password,
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.fingerprint),
                               labelText: "Password",

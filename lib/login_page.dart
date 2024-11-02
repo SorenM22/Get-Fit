@@ -1,5 +1,7 @@
+import 'package:ctrl_alt_defeat/login_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/signup_page.dart';
+import 'package:get/get.dart';
 
 
 
@@ -11,6 +13,9 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
+
+    final authControl = Get.put(loginPresenter());
+    final _formKey = GlobalKey<FormState>();
 
     return SafeArea(
       child: Scaffold(
@@ -69,11 +74,15 @@ class LoginPage extends StatelessWidget {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: (){},
+                              onPressed: (){
+                                if(_formKey.currentState!.validate()){
+                                  loginPresenter.instance.logUserIn(authControl.email.text.trim(), authControl.password.text.trim());
+                                }
+                              },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black54,
                                   foregroundColor: Colors.white),
-                              child: Text("Let Me In")
+                              child: Text("Log In")
                               ),
                           ),
                         ],

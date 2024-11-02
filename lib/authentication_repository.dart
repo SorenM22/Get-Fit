@@ -29,4 +29,13 @@ class AuthenticationRepository extends GetxController {
     } catch(_){}
   }
 
+  Future <void> loginWithEmailandPass (String email, String password) async {
+    try {
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      firebaseUser.value != null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
+
+    } on FirebaseAuthException catch(e){
+    } catch(_){}
+  }
+
 }

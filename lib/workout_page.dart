@@ -9,7 +9,7 @@ class WorkoutPage extends StatefulWidget {
   State<WorkoutPage> createState() => _WorkoutPage();
 }
 
-class _WorkoutPage extends State<WorkoutPage>{
+class _WorkoutPage extends State<WorkoutPage> {
   int pageType = 0;
 
   void navigateToInput() {
@@ -21,13 +21,15 @@ class _WorkoutPage extends State<WorkoutPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pageType == 0 ? const WorkoutInitialPage() : const WorkoutInputPage(),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: navigateToInput,
-        tooltip: 'Add Stuff',
-        child: const Icon(Icons.add),
-      )
-    );
+        body: pageType == 0
+            ? const WorkoutInitialPage()
+            : const WorkoutInputPage(),
+        floatingActionButton: pageType == 0
+            ? FloatingActionButton(
+                onPressed: navigateToInput,
+                tooltip: 'Add Stuff',
+                child: const Icon(Icons.add),
+              )
+            : null);
   }
 }

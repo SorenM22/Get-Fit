@@ -1,3 +1,4 @@
+import 'package:ctrl_alt_defeat/authentication_repository.dart';
 import 'package:ctrl_alt_defeat/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/goal_workout_page.dart';
@@ -60,6 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: _pressedAccountButton,
           child: Text(_username),
           isSemanticButton: true,),
+        actions: [
+          TextButton(onPressed: (){
+            AuthenticationRepository.instance.logoutUser();
+          }, child: Text("Log Out")),
+        ],
+
       ),
       body: homeContentWindow,
 

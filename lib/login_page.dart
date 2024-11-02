@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/signup_page.dart';
 import 'package:get/get.dart';
 
+import 'authentication_repository.dart';
+
 
 
 class LoginPage extends StatelessWidget {
@@ -66,7 +68,9 @@ class LoginPage extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                              onPressed: (){},
+                              onPressed: (){
+                                AuthenticationRepository.instance.logoutUser();
+                              },
                                 child: const Text("Forgot Password"),
                                 style: TextButton.styleFrom(foregroundColor: Colors.blueAccent)
                             ),

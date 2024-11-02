@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ctrl_alt_defeat/authentication_repository.dart';
+import 'package:ctrl_alt_defeat/models/authentication_repository.dart';
 import 'package:ctrl_alt_defeat/login_page.dart';
 import 'package:ctrl_alt_defeat/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp().then((value) => Get.put(AuthenticationRepository()));
-  //Get.put(AuthenticationRepository());
   runApp(const MyApp());
 }
 
@@ -57,7 +56,7 @@ class AuthenticationPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image(image: AssetImage(loginImage), height: height * 0.6),
+              Image(image: AssetImage(loginImage), height: height * 0.35),
                const Column(
                   children: [
                    Text("Welcome to MyFit!", textAlign: TextAlign.center, style: TextStyle(fontSize: 40),),

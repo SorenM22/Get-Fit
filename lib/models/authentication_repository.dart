@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'authentication_page.dart';
-import 'home_page.dart';
+import '../authentication_page.dart';
+import '../home_page.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -17,6 +17,7 @@ class AuthenticationRepository extends GetxController {
   }
 
   createScreen(User? user) {
+
     user == null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
   }
 
@@ -31,9 +32,9 @@ class AuthenticationRepository extends GetxController {
 
   Future <void> loginWithEmailandPass (String email, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      firebaseUser.value != null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
-
+      await auth.signInWithEmailAndPassword(email: email, password: password).then(createScreen(firebaseUser.value));
+      print("gets here");
+      // createScreen(firebaseUser.value);
     } on FirebaseAuthException catch(e){
     } catch(_){}
   }

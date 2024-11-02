@@ -1,4 +1,4 @@
-import 'package:ctrl_alt_defeat/authentication_repository.dart';
+import 'package:ctrl_alt_defeat/models/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,9 +1,11 @@
-import 'package:ctrl_alt_defeat/login_presenter.dart';
+import 'dart:math';
+
+import 'package:ctrl_alt_defeat/presenter/login_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/signup_page.dart';
 import 'package:get/get.dart';
 
-import 'authentication_repository.dart';
+import 'models/authentication_repository.dart';
 
 
 
@@ -17,7 +19,7 @@ class LoginPage extends StatelessWidget {
     var height = MediaQuery.of(context).size.height;
 
     final authControl = Get.put(loginPresenter());
-    final _formKey = GlobalKey<FormState>();
+    final loginFormKey = GlobalKey<FormState>();
 
     return SafeArea(
       child: Scaffold(
@@ -38,7 +40,7 @@ class LoginPage extends StatelessWidget {
                 const Text("please login", style: TextStyle(fontSize: 15),),
 
                 Form(
-                  key: _formKey,
+                  //key: loginFormKey,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Column(
@@ -48,7 +50,7 @@ class LoginPage extends StatelessWidget {
                             controller: authControl.email,
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.person_outline_outlined),
-                              labelText: "E-mail",
+                              label: Text("E-mail"),
                               hintText: "Enter you e-mail",
                               border: OutlineInputBorder(),
                         ),
@@ -82,9 +84,9 @@ class LoginPage extends StatelessWidget {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: (){
-                                if(_formKey.currentState!.validate()){
+                                //if(loginFormKey.currentState!.validate()){
                                   loginPresenter.instance.logUserIn(authControl.email.text.trim(), authControl.password.text.trim());
-                                }
+                                //}
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black54,

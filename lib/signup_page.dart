@@ -133,7 +133,7 @@ class signupInputFields extends StatelessWidget {
                               password: authControl.password.text.trim(),
                           );
 
-                          signupPresenter.instance.createUser(user);
+                          signupPresenter.instance.signupAndCreateUser(user);
 
                         }
                       },

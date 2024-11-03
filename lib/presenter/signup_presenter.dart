@@ -7,21 +7,33 @@ import 'package:get/get.dart';
 
 class signupPresenter extends GetxController {
   static signupPresenter get instance => Get.find();
-  final testingAuth = Get.put(AuthenticationRepository());
+
 
   final name = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
 
   final userRepo = Get.put(UserRepository());
+  final authRepo = Get.put(AuthenticationRepository());
 
-  void registerUser(String name, String email, String password){
-  AuthenticationRepository.instance.createUserFromSignUpPrompts(name, email, password);
+  Future <void> registerUser(String name, String email, String password) async{
+  authRepo.createUserFromSignUpPrompts(name, email, password);
   }
-  
-  Future<void> createUser(UserModel user) async {
-    await userRepo.createUser(user);
-    registerUser(user.name, user.email, user.password);
+
+  Future<void> signupAndCreateUser(UserModel user)  async {
+    try {
+      await authRepo.createUserFromSignUpPrompts(
+          user.name,
+          user.email,
+          user.password
+      );
+
+      await userRepo.createUser(user);
+    } catch (e) {
+      print('Error creating user document: $e');
+      rethrow;
+    }
   }
+
 
 }

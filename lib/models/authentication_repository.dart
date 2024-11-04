@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import '../authentication_page.dart';
 import '../home_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -18,16 +19,20 @@ class AuthenticationRepository extends GetxController {
     ever(firebaseUser, updateUID);
   }
 
+  //sets the landing screen based on if a user is logged in or not
   createScreen(User? user) {
     user == null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
 
   }
 
+  //allows us to grab the current user's UID
   updateUID(User? user){
      user == null ? UID = "null" : UID = user.uid;
      print("UID has changed");
   }
 
+
+  // general login with user credentials --> email and password
   Future <void> createUserFromSignUpPrompts (String name, String email, String password) async {
     try {
        await auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -47,7 +52,27 @@ class AuthenticationRepository extends GetxController {
     } catch(_){}
   }
 
-
   Future <void> logoutUser () async => await auth.signOut();
+
+
+
+  Future<UserCredential> signInWithGoogle() async {
+
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
 
 }

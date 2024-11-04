@@ -9,9 +9,22 @@ class loginPresenter extends GetxController {
   final email = TextEditingController();
   final password = TextEditingController();
 
+  final isGoogleLoading = false.obs;
+
 
   void logUserIn(String email, String password){
     AuthenticationRepository.instance.loginWithEmailandPass(email, password);
+  }
+
+  Future<void> googleLogin() async {
+    try{
+      isGoogleLoading.value = true;
+      await testingAuth.signInWithGoogle();
+      isGoogleLoading.value = false;
+    } catch (e) {
+      isGoogleLoading.value = false;
+      print("Failed to log in with google: $e");
+    }
   }
 
 }

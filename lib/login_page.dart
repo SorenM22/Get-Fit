@@ -103,7 +103,7 @@ class LoginPage extends StatelessWidget {
                   width: double.infinity,
                   child: OutlinedButton.icon(
                       icon: Image(image: AssetImage("assets/login_Image/Google_Logo.png"), width: 25.0),
-                      onPressed: (){},
+                      onPressed: (){authControl.googleLogin();},
                       label: Text("Google sign-in")),
                 ),
 

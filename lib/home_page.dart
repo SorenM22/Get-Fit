@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
           isSemanticButton: true,),
         actions: [
           TextButton(onPressed: (){
-            AuthenticationRepository.instance.logoutUser();
+            AuthenticationRepository.instance.signout();
           }, child: Text("Log Out")),
         ],
 

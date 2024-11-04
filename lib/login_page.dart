@@ -73,9 +73,7 @@ class LoginPage extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                              onPressed: (){
-                                AuthenticationRepository.instance.logoutUser();
-                              },
+                              onPressed: (){},
                                 child: const Text("Forgot Password"),
                                 style: TextButton.styleFrom(foregroundColor: Colors.blueAccent)
                             ),

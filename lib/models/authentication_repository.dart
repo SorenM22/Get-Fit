@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import '../authentication_page.dart';
@@ -53,6 +54,15 @@ class AuthenticationRepository extends GetxController {
     } catch(_){}
   }
 
+  Future <void> signout () async{
+    try {
+      await logoutUser();
+      await googleSignout();
+    } catch (e){
+      print("Error logging out: $e");
+    }
+  }
+
   Future <void> logoutUser () async => await auth.signOut();
 
 
@@ -71,9 +81,22 @@ class AuthenticationRepository extends GetxController {
       idToken: googleAuth?.idToken,
     );
 
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    User? user = userCredential.user;
+
+    if(user != null && userCredential.additionalUserInfo?.isNewUser == true){
+      await FirebaseFirestore.instance.collection('User_Data').doc(user.uid).set({
+        'Name': user.displayName,
+        'Email': user.email
+      });
+    }
+
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return userCredential;
+    // return await auth.signInWithCredential(credential);
   }
+
+  Future <void> googleSignout () async => await GoogleSignIn().signOut();
 
 
 }

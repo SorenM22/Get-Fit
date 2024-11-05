@@ -1,4 +1,6 @@
+import 'package:ctrl_alt_defeat/workout_page.dart';
 import 'package:flutter/material.dart';
+import 'package:ctrl_alt_defeat/workout_input_page.dart';
 
 class GoalWorkoutPage extends StatefulWidget {
   const GoalWorkoutPage({Key? key, required this.title}) : super(key: key);
@@ -28,11 +30,10 @@ class _GoalWorkoutState extends State<GoalWorkoutPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-
             NavigationBar(
-              destinations: [
-                NavigationDestination(icon: Text("Goal"), label: ""),
+              destinations: const [
                 NavigationDestination(icon: Text("Workout"), label: ""),
+                NavigationDestination(icon: Text("Goal"), label: ""),
               ],
               backgroundColor: Colors.white,
               selectedIndex: _selectedWorkoutOrGoal,
@@ -41,31 +42,19 @@ class _GoalWorkoutState extends State<GoalWorkoutPage> {
 
             // switch between Goal page and Workout Page
             _selectedWorkoutOrGoal == 0
-            // Goal Page
-                ? Column(
-                children: <Widget> [
-                  Text("Goal Page", style: TextStyle(fontSize: 24)),
-                  Text("Running Page", style: TextStyle(fontSize: 20)),
-                  Text("Miles Ran: ", style: TextStyle(fontSize: 18)),
-                  Text("Lifting Page", style: TextStyle(fontSize: 20)),
-                  Text("Max lift on Bench: ", style: TextStyle(fontSize: 18))
-                ]
-            )
-            // Workout Page
-                : Column(
-                children: <Widget> [
-                  Text("Workout Page", style: TextStyle(fontSize: 24)),
-                  Text("Workout Page", style: TextStyle(fontSize: 24))
-                ]
-            )
+                //Workout Page
+                ? const Expanded(child: WorkoutPage())
+                :
+                //Goals Page
+                const Column(children: <Widget>[
+                    Text("Goal Page", style: TextStyle(fontSize: 24)),
+                    Text("Running Page", style: TextStyle(fontSize: 20)),
+                    Text("Miles Ran: ", style: TextStyle(fontSize: 18)),
+                    Text("Lifting Page", style: TextStyle(fontSize: 20)),
+                    Text("Max lift on Bench: ", style: TextStyle(fontSize: 18))
+                  ])
           ],
         ),
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: _pressedAddButton,
-        tooltip: 'Add Stuff',
-        child: const Icon(Icons.add),
       ),
     );
   }

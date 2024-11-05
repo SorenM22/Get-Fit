@@ -5,7 +5,6 @@ class GoalPage extends StatefulWidget{
   State<StatefulWidget> createState() {
     return GoalState();
   }
-
 }
 
 class GoalState extends State<GoalPage>{

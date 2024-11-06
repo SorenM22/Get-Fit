@@ -1,7 +1,9 @@
+import 'package:ctrl_alt_defeat/models/user_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
 class WorkoutInputPage extends StatelessWidget {
   const WorkoutInputPage({super.key});
@@ -30,6 +32,7 @@ class WorkoutInputPageImplementation extends StatefulWidget {
 
 class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
   final db = FirebaseFirestore.instance.collection('User_Data');
+  final userRepo = Get.put(UserRepository());
 
   List<Widget> exercises = [];
 
@@ -43,7 +46,13 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
     setState(() {});
   }
 
-  void submitExercise() {
+  void submitExercise() async {
+    //IMPLEMENT ME
+    String? userID = userRepo.getCurrentUserUID();
+
+    print(userID);
+
+    await db.doc(userID).set(data);
     print("submitted!!!!");
   }
 

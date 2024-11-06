@@ -34,7 +34,7 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
   final db = FirebaseFirestore.instance.collection('User_Data');
   final userRepo = Get.put(UserRepository());
 
-  List<Widget> exercises = [];
+  List<ExerciseWidget> exercises = [];
 
   @override
   void initState() {
@@ -50,10 +50,17 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
     //IMPLEMENT ME
     String? userID = userRepo.getCurrentUserUID();
 
-    print(userID);
+    DateTime currentTime = DateTime.now();
 
-    await db.doc(userID).set(data);
-    print("submitted!!!!");
+    for (final exercise in exercises) {
+      await db.doc(userID.toString()).collection("Workout_Data").doc(currentTime.toString()).set({
+        exercise.getText(): {
+
+        }
+      });
+    }
+
+    print(userID);
   }
 
   @override
@@ -99,8 +106,14 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
 class ExerciseWidget extends StatelessWidget {
   const ExerciseWidget({super.key});
 
+  static const String text = 'New Exercise';
+
+  String getText() {
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Wrap(children: [Text('New Exercise')]);
+    return const Wrap(children: [Text(text)]);
   }
 }

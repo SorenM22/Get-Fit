@@ -47,16 +47,16 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
   }
 
   void submitExercise() async {
-    //IMPLEMENT ME
     String? userID = userRepo.getCurrentUserUID();
 
     DateTime currentTime = DateTime.now();
 
     for (final exercise in exercises) {
-      await db.doc(userID.toString()).collection("Workout_Data").doc(currentTime.toString()).set({
-        exercise.getText(): {
-
-        }
+      await db.doc(userID.toString()).collection("Workout_Data").doc(currentTime.toString()).collection(
+          exercise.getText()
+      ).doc("Set1").set({
+        "Rep1":
+            123
       });
     }
 

@@ -1,6 +1,8 @@
 import 'package:ctrl_alt_defeat/history_page.dart';
+import 'package:ctrl_alt_defeat/models/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/goal_workout_page.dart';
+import 'package:get/get.dart';
 import 'profile_page.dart';
 
 
@@ -24,6 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedPage = 0;
   int _selectedWorkoutOrGoal =0;
   String _username = 'USER NAME';
+
 
 
   Widget homeContentWindow = GoalWorkoutPage(title: "Goal/Workout Page");
@@ -83,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
             if (value == 'profile') {
               _tappedPageSelect(3);
             } else if (value == 'logout') {
-              _onLogoutSelected();
+              AuthenticationRepository.instance.signout();
             }
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[

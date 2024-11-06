@@ -1,4 +1,5 @@
 import 'package:ctrl_alt_defeat/workout_page.dart';
+import 'package:ctrl_alt_defeat/GoalPage.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/workout_input_page.dart';
 
@@ -44,15 +45,8 @@ class _GoalWorkoutState extends State<GoalWorkoutPage> {
             _selectedWorkoutOrGoal == 0
                 //Workout Page
                 ? const Expanded(child: WorkoutPage())
-                :
                 //Goals Page
-                const Column(children: <Widget>[
-                    Text("Goal Page", style: TextStyle(fontSize: 24)),
-                    Text("Running Page", style: TextStyle(fontSize: 20)),
-                    Text("Miles Ran: ", style: TextStyle(fontSize: 18)),
-                    Text("Lifting Page", style: TextStyle(fontSize: 20)),
-                    Text("Max lift on Bench: ", style: TextStyle(fontSize: 18))
-                  ])
+                :GoalPage()
           ],
         ),
       ),

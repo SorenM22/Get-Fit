@@ -34,12 +34,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _tappedPageSelect(int index) {
     setState(() {
-      _selectedPage = index;
-
+      if(index>=0 && index<3) {
+        _selectedPage = index;
+      }
 
       switch (index){
         case 3:
-          homeContentWindow = ProfilePage(title: "Profile Page");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfilePage(title: 'Profile Page'),
+            ),
+          );
         case 2:
           homeContentWindow = Text("SETTINGS PAGE");
         case 1:
@@ -47,8 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
         default:
           homeContentWindow = GoalWorkoutPage(title: "Goal/Workout Page");
       }
-
-
     });
   }
 
@@ -132,9 +136,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: _selectedPage,
         selectedItemColor: Theme.of(context).primaryColor,
-        onTap: _tappedPageSelect,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        onTap: (index) {
+          index=_selectedPage;
+          if(index!=3) {
+            _tappedPageSelect(index);
+          }
+        },
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

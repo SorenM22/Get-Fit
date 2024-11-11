@@ -46,7 +46,7 @@ class _GoalWorkoutState extends State<GoalWorkoutPage> {
                 //Workout Page
                 ? const Expanded(child: WorkoutPage())
                 //Goals Page
-                :GoalPage()
+                : Expanded(child: GoalPage())
           ],
         ),
       ),

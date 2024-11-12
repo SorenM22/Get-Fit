@@ -29,12 +29,15 @@ class WorkoutPrefPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
+      body: Padding(padding: const EdgeInsets.symmetric(
+        vertical: 200,
+      ),
+      child: ListView(
+          children: [
 
           Text("How do you like to track your workouts?",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall),
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headlineMedium),
           TextButton(
             onPressed: pressedCardio,
             child: Text("Time",style: Theme.of(context).textTheme.headlineMedium),
@@ -43,7 +46,8 @@ class WorkoutPrefPage extends StatelessWidget {
               onPressed: pressedWeights,
               child: Text("Sets",style: Theme.of(context).textTheme.headlineMedium,)
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

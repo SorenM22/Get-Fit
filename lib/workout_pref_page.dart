@@ -13,14 +13,14 @@ class WorkoutPrefPage extends StatelessWidget {
   final db = FirebaseFirestore.instance.collection('User_Data');
   
   void pressedCardio() {
-    db.doc(userID.toString()).set(
+    db.doc(userID.getCurrentUserUID()).set(
         {'WorkoutPref' : 'cardio'},
         SetOptions(merge: true)
     );
   }
 
   void pressedWeights() {
-    db.doc(userID.toString()).set(
+    db.doc(userID.getCurrentUserUID()).set(
         {'WorkoutPref' : 'weights'},
         SetOptions(merge: true)
     );

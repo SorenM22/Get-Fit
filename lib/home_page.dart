@@ -1,5 +1,6 @@
 import 'package:ctrl_alt_defeat/history_page.dart';
 import 'package:ctrl_alt_defeat/models/authentication_repository.dart';
+import 'package:ctrl_alt_defeat/workout_pref_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/goal_workout_page.dart';
 import 'package:get/get.dart';
@@ -38,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       switch (index){
         case 2:
-          homeContentWindow = Text("SETTINGS PAGE");
+          homeContentWindow = WorkoutPrefPage();
         case 1:
           homeContentWindow = HistoryPage(title: "History Page");
         default:

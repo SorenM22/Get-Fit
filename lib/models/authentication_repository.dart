@@ -87,7 +87,8 @@ class AuthenticationRepository extends GetxController {
     if(user != null && userCredential.additionalUserInfo?.isNewUser == true){
       await FirebaseFirestore.instance.collection('User_Data').doc(user.uid).set({
         'Name': user.displayName,
-        'Email': user.email
+        'Email': user.email,
+        'WorkoutPref' : 'weights'
       });
     }
 

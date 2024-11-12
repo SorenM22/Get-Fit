@@ -1,6 +1,8 @@
+import 'package:ctrl_alt_defeat/models/user_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key, required this.title});
@@ -29,16 +31,25 @@ class HistoryPageImplementation extends StatefulWidget {
   State<HistoryPageImplementation> createState() => _HistoryPageState();
 }
 class _HistoryPageState extends State<HistoryPageImplementation> {
-  final db = FirebaseFirestore.instance.collection('User_Data');
+  final userRepo = Get.put(UserRepository());
+  final userData = FirebaseFirestore.instance.collection('User_Data');
 
   List<Widget> items = [];
 
   Future<void> retrieveData() async {
-    QuerySnapshot data = await db.get();
+    String? userID = userRepo.getCurrentUserUID();
+    final CollectionReference workouts = userData.doc(userID).collection("Workout_Data");
+    QuerySnapshot data = await workouts.get();
+    print(await userData.doc(userID).get());
+
+    print(workouts);
+    print(data);
+    print(userID);
+    print(data.docs);
     data.docs.asMap().forEach((key, value) {
-      final nameData = value.get('Name');
-      items.add(ListItem(name: nameData));
+      print(value);
     });
+    // items.add(ListItem)
     setState(() {
 
     });
@@ -68,16 +79,24 @@ class _HistoryPageState extends State<HistoryPageImplementation> {
 }
 
 class ListItem extends StatelessWidget {
-  const ListItem({super.key, required this.name});
+  const ListItem({super.key, required this.name, required this.time});
   final String name;
+  final String time;
+
+  String truncateString(String str) {
+    return str.length < 10 ? str : "${str.substring(0, 10)}...";
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: Text(name)),
-        const Expanded(child: Text('This is another text input'))
+        Expanded(child: Text(truncateString(name))),
+        const Expanded(
+            child: Text('This is another text input')
+        )
       ]
     );
   }
 }
+

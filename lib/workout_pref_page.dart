@@ -1,17 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ctrl_alt_defeat/authentication_page.dart';
+import 'package:ctrl_alt_defeat/models/user_repository.dart';
 import 'package:ctrl_alt_defeat/workout_initial_page.dart';
 import 'package:ctrl_alt_defeat/workout_input_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class WorkoutPrefPage extends StatelessWidget {
-  const WorkoutPrefPage({super.key});
+  WorkoutPrefPage({super.key});
 
+  final userID = Get.put(UserRepository());
+  final db = FirebaseFirestore.instance.collection('User_Data');
+  
   void pressedCardio() {
-    
+    db.doc(userID.toString()).set(
+        {'WorkoutPref' : 'cardio'},
+        SetOptions(merge: true)
+    );
   }
 
   void pressedWeights() {
-
+    db.doc(userID.toString()).set(
+        {'WorkoutPref' : 'weights'},
+        SetOptions(merge: true)
+    );
   }
 
   @override

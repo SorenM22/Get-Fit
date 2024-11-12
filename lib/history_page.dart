@@ -12,9 +12,6 @@ class HistoryPage extends StatelessWidget {
     return FutureBuilder(
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            print("couldnt connect");
-          }
           if (snapshot.connectionState == ConnectionState.done) {
             return const HistoryPageImplementation(title: 'Workout History Page');
           }

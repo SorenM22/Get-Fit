@@ -48,8 +48,8 @@ class _ExerciseWidget extends State<ExerciseWidget> {
     });
   }
 
-  String reps = '';
-  String weight = '';
+  String reps = '0';
+  String weight = '0';
   String newExercise = '';
 
   void newSet() {
@@ -90,6 +90,43 @@ class _ExerciseWidget extends State<ExerciseWidget> {
 
     setState(() {});
   }
+
+  bool addExercise(String value) {
+    value = value.trim();
+    value.toLowerCase();
+
+    String tempValue = '';
+    bool _spaceBefore = true;
+
+    value.runes.forEach((int rune) {
+      var character = new String.fromCharCode(rune);
+      if(_spaceBefore) {
+        if(character != ' ') {
+          character = character.toUpperCase();
+          tempValue = tempValue + character;
+        }
+      } else {
+        tempValue = tempValue + character;
+      }
+      _spaceBefore = (character == ' ');
+    });
+
+
+    value = tempValue;
+    print(value);
+
+
+    if(optionList.contains(value)) {
+      return false;
+    } else {
+      databaseReference.collection('Exercise_Types').doc('Lifting_Exercises').update({
+        'Lifting': FieldValue.arrayUnion([value])
+      });
+      populateMenu();
+      return true;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +199,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                                       onChanged: (text) {
                                         newExercise = text;
                                       },
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.name,
                                       decoration: InputDecoration(
                                         constraints: BoxConstraints.tight(Size(150,50)),
                                         border: OutlineInputBorder(),
@@ -171,7 +208,37 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                                       ),
                                     ),
                                     IconButton(
-                                        onPressed: newSet,
+                                        onPressed: () async {
+                                          if(addExercise(newExercise)) {
+                                            showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext context) => AlertDialog(
+                                                title: const Text('Success!'),
+                                                content: const Text('New exercise type successfully created.'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () => Navigator.pop(context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext context) => AlertDialog(
+                                                title: const Text('Error: Duplicate'),
+                                                content: const Text('This exercise type already exists.'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () => Navigator.pop(context, 'OK'),
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        },
                                         icon: const Icon(
                                             CupertinoIcons.plus_circle,
                                             size: 40)
@@ -184,7 +251,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                     ),
                     Container(
                       color: Color(0xffD4D2D5),
-                      height: 100,
+                      height: 90,
                       width: boxWidth,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -195,7 +262,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                                   Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget> [
-                                        Text('New Set'),
+                                        Text('New Set', style: const TextStyle(fontWeight: FontWeight.bold)),
 
                                         Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -244,6 +311,20 @@ class _ExerciseWidget extends State<ExerciseWidget> {
               ),
             ),
 
+            Visibility(
+                visible: (_open && sets.isNotEmpty),
+                child: Container(
+                  color: Colors.grey,
+                  width: boxWidth,
+                  height: 25,
+                  child:Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget> [
+                        Text('Sets:', style: const TextStyle(fontWeight: FontWeight.bold)),
+                      ]
+                  ),
+                ),
+            ),
             Visibility(
               visible: _open,
               child: Flexible(

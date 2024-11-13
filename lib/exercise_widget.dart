@@ -30,7 +30,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
   Set<String> optionList = <String>{ 'Select Option' };
   String selectedValue = 'Select Option';
 
-  double boxWidth = 250;
+  double boxWidth = 500;
 
   Size boxSize = Size(250,400);
   List<Widget> sets = [];
@@ -93,8 +93,8 @@ class _ExerciseWidget extends State<ExerciseWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Column(
+    return Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget> [
             Container(
@@ -258,17 +258,8 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                 ),
               ),
             ),
-
-
-
-
-
-
-
-
           ],
-        )
-    );
+        );
   }
 
 
@@ -293,16 +284,6 @@ class SetWidget extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 Future<void> main() async {
   runApp(const MyApp());

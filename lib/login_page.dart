@@ -57,6 +57,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
+                            obscureText: true,
                             controller: authControl.password,
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.fingerprint),

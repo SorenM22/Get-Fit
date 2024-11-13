@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'exercise_widget.dart';
 
 class WorkoutInputPage extends StatelessWidget {
   const WorkoutInputPage({super.key});
@@ -51,14 +52,14 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
 
     DateTime currentTime = DateTime.now();
 
-    for (final exercise in exercises) {
-      await db.doc(userID.toString()).collection("Workout_Data").doc(currentTime.toString()).collection(
-          exercise.getText()
-      ).doc("Set1").set({
-        "Rep1":
-            123
-      });
-    }
+    // for (final exercise in exercises) {
+    //   await db.doc(userID.toString()).collection("Workout_Data").doc(currentTime.toString()).collection(
+    //       exercise.getText()
+    //   ).doc("Set1").set({
+    //     "Rep1":
+    //         123
+    //   });
+    // }
 
     print(userID);
   }
@@ -100,20 +101,5 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
         flex: 1,
       )
     ]);
-  }
-}
-
-class ExerciseWidget extends StatelessWidget {
-  const ExerciseWidget({super.key});
-
-  static const String text = 'New Exercise';
-
-  String getText() {
-    return text;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Wrap(children: [Text(text)]);
   }
 }

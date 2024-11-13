@@ -24,7 +24,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedPage = 0;
-  int _selectedWorkoutOrGoal =0;
   String _username = 'USER NAME';
 
 
@@ -32,20 +31,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget homeContentWindow = GoalWorkoutPage(title: "Goal/Workout Page");
 
 
-  void _tappedPageSelect(int index) {
+
+
+  void _tappedBottomNavBar(int index) {
     setState(() {
-      if(index>=0 && index<3) {
-        _selectedPage = index;
-      }
 
       switch (index){
-        case 3:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProfilePage(title: 'Profile Page'),
-            ),
-          );
         case 2:
           homeContentWindow = Text("SETTINGS PAGE");
         case 1:
@@ -61,19 +52,6 @@ class _MyHomePageState extends State<MyHomePage> {
     throw UnimplementedError("Unimplemented _pressedAccountButton");
   }
 
-
-  void _pressedAddButton() {
-    throw UnimplementedError("Unimplemented _pressedAccountButton");
-  }
-
-
-  void _pressedWorkoutOrGoal(int index) {
-    setState(() {
-      _selectedWorkoutOrGoal = index;
-    });
-  }
-
-
   void _onLogoutSelected() {
     throw('Logout');
   }
@@ -88,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: PopupMenuButton<String>(
           onSelected: (value) {
             if (value == 'profile') {
-              _tappedPageSelect(3);
+              _tappedProfileButton();
             } else if (value == 'logout') {
               AuthenticationRepository.instance.signout();
             }
@@ -136,14 +114,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: _selectedPage,
         selectedItemColor: Theme.of(context).primaryColor,
-        onTap: (index) {
-          index=_selectedPage;
-          if(index!=3) {
-            _tappedPageSelect(index);
-          }
-        },
+        onTap: _tappedBottomNavBar,
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  void _tappedProfileButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfilePage(title: 'Profile Page'),
+      ),
     );
   }
 }

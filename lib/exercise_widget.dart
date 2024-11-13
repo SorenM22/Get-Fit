@@ -100,7 +100,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
             Container(
               height: 50,
               width: boxWidth,
-              color: Colors.grey,
+              color: const Color(0xffD4D2D5),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
@@ -119,7 +119,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
                     Container(
-                      color: Colors.grey,
+                      color: Color(0xffD4D2D5),
                       height: 50,
                       width: boxWidth,
                       child: Column(
@@ -149,7 +149,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                     Visibility(
                       visible: _newExercise,
                       child: Container(
-                        color: Colors.grey,
+                        color: Color(0xffD4D2D5),
                         height: 75,
                         width: boxWidth,
                         child: Column(
@@ -183,7 +183,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                       ),
                     ),
                     Container(
-                      color: Colors.grey,
+                      color: Color(0xffD4D2D5),
                       height: 100,
                       width: boxWidth,
                       child: Column(
@@ -248,7 +248,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
               visible: _open,
               child: Flexible(
                 child: Container(
-                  color: Colors.grey,
+                  color: Color(0xffD4D2D5),
                   width: boxWidth,
                   child: ListView.builder(
                       shrinkWrap: true,
@@ -276,7 +276,7 @@ class SetWidget extends StatelessWidget {
     return Center(
       child: Flexible(
         child: Container(
-          color: Colors.grey,
+          color: Color(0xffD4D2D5),
           height: 25,
           child: Text('$reps reps of $weight lbs'),
         ),
@@ -306,7 +306,7 @@ class MyApp extends StatelessWidget {
               title: 'Flutter Demo',
               theme: ThemeData(
 
-                primarySwatch: Colors.blue,
+                primarySwatch: Colors.cyan,
               ),
               home: const MyHomePage(title: 'Exercise Widget'),
             );

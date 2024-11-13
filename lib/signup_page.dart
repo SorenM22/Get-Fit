@@ -100,6 +100,7 @@ class signupInputFields extends StatelessWidget {
               ),
 
               TextFormField(
+                obscureText: true,
                 controller: authControl.password,
                 decoration: InputDecoration(
                       label: Text("Password"),

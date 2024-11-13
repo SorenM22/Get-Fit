@@ -1,54 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ctrl_alt_defeat/history_page.dart';
 import 'package:ctrl_alt_defeat/models/authentication_repository.dart';
+import 'package:ctrl_alt_defeat/workout_pref_page.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/goal_workout_page.dart';
 import 'package:get/get.dart';
+import 'models/user_repository.dart';
 import 'profile_page.dart';
 
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-
   final String title;
-
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 
-
-
-
-
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedPage = 0;
-  int _selectedWorkoutOrGoal =0;
   String _username = 'USER NAME';
+  final user = Get.put(UserRepository());
+  final db = FirebaseFirestore.instance.collection("User_Data");
 
+  String profileColor = Colors.black.hex;
 
+  @override
+  void initState() {
+    db.doc(user.getCurrentUserUID()).get().then((grabColor){
+      profileColor = grabColor.get("Profile Color");
+    });
+    super.initState();
+  }
 
   Widget homeContentWindow = GoalWorkoutPage(title: "Goal/Workout Page");
 
-
-  void _tappedPageSelect(int index) {
+  void _tappedBottomNavBar(int index) {
     setState(() {
-      _selectedPage = index;
-
 
       switch (index){
-        case 3:
-          homeContentWindow = ProfilePage(title: "Profile Page");
         case 2:
-          homeContentWindow = Text("SETTINGS PAGE");
+          homeContentWindow = WorkoutPrefPage();
         case 1:
           homeContentWindow = HistoryPage(title: "History Page");
         default:
           homeContentWindow = GoalWorkoutPage(title: "Goal/Workout Page");
       }
-
-
     });
   }
 
@@ -56,19 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _pressedAccountButton() {
     throw UnimplementedError("Unimplemented _pressedAccountButton");
   }
-
-
-  void _pressedAddButton() {
-    throw UnimplementedError("Unimplemented _pressedAccountButton");
-  }
-
-
-  void _pressedWorkoutOrGoal(int index) {
-    setState(() {
-      _selectedWorkoutOrGoal = index;
-    });
-  }
-
 
   void _onLogoutSelected() {
     throw('Logout');
@@ -84,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: PopupMenuButton<String>(
           onSelected: (value) {
             if (value == 'profile') {
-              _tappedPageSelect(3);
+              _tappedProfileButton();
             } else if (value == 'logout') {
               AuthenticationRepository.instance.signout();
             }
@@ -103,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(8.0),
             child:  CircleAvatar(
               radius: 25,
-              backgroundColor: Colors.blue, // Circle color
+              backgroundColor: profileColor.toColor, // Circle color
               child: const Text('P',
                 style: TextStyle(
                   color: Colors.white,
@@ -132,9 +119,23 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: _selectedPage,
         selectedItemColor: Theme.of(context).primaryColor,
-        onTap: _tappedPageSelect,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        onTap: _tappedBottomNavBar,
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  void _tappedProfileButton() async {
+    final Color? updatedColor = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfilePage(title: 'Profile Page'),
+      ),
+    );
+    if(updatedColor!=null) {
+      setState(() {
+        profileColor = updatedColor.hex;
+      });
+    }
   }
 }

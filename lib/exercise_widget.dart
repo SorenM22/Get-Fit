@@ -314,7 +314,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
             Visibility(
                 visible: (_open && sets.isNotEmpty),
                 child: Container(
-                  color: Colors.grey,
+                  color: Color(0xffD4D2D5),
                   width: boxWidth,
                   height: 25,
                   child:Column(

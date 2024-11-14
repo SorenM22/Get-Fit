@@ -7,21 +7,24 @@ import 'package:flutter/cupertino.dart';
 
 class ExerciseWidget extends StatefulWidget {
 
-  const ExerciseWidget({super.key});
+  Color color;
+
+  ExerciseWidget(this.color, {super.key});
 
   @override
-  State<ExerciseWidget> createState() => _ExerciseWidget();
+  State<ExerciseWidget> createState() => _ExerciseWidget(color);
 
 }
 
 class _ExerciseWidget extends State<ExerciseWidget> {
 
-  _ExerciseWidget() {
+  _ExerciseWidget(this.widgetColor) {
     populateMenu();
   }
 
   final databaseReference = FirebaseFirestore.instance;
 
+  Color widgetColor;
   String titleText = 'Exercise';
   bool _open = true;
   bool _newExercise = false;
@@ -54,7 +57,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
 
   void newSet() {
     List<Widget> temp = sets;
-    sets = [SetWidget(int.parse(reps), int.parse(weight))];
+    sets = [SetWidget(int.parse(reps), int.parse(weight), widgetColor)];
     sets.addAll(temp);
     setState(() {});
   }
@@ -137,7 +140,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
             Container(
               height: 50,
               width: boxWidth,
-              color: const Color(0xffD4D2D5),
+              color: widgetColor,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
@@ -156,7 +159,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
                     Container(
-                      color: Color(0xffD4D2D5),
+                      color: widgetColor,
                       height: 50,
                       width: boxWidth,
                       child: Column(
@@ -186,7 +189,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                     Visibility(
                       visible: _newExercise,
                       child: Container(
-                        color: Color(0xffD4D2D5),
+                        color: widgetColor,
                         height: 75,
                         width: boxWidth,
                         child: Column(
@@ -250,7 +253,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                       ),
                     ),
                     Container(
-                      color: Color(0xffD4D2D5),
+                      color: widgetColor,
                       height: 90,
                       width: boxWidth,
                       child: Column(
@@ -314,7 +317,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
             Visibility(
                 visible: (_open && sets.isNotEmpty),
                 child: Container(
-                  color: Color(0xffD4D2D5),
+                  color: widgetColor,
                   width: boxWidth,
                   height: 25,
                   child:Column(
@@ -329,7 +332,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
               visible: _open,
               child: Flexible(
                 child: Container(
-                  color: Color(0xffD4D2D5),
+                  color: widgetColor,
                   width: boxWidth,
                   child: ListView.builder(
                       shrinkWrap: true,
@@ -349,15 +352,16 @@ class _ExerciseWidget extends State<ExerciseWidget> {
 class SetWidget extends StatelessWidget {
   int reps = 0;
   int weight = 0;
+  Color color;
 
-  SetWidget(this.reps, this.weight, {super.key});
+  SetWidget(this.reps, this.weight, this.color, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Flexible(
         child: Container(
-          color: Color(0xffD4D2D5),
+          color: color,
           height: 25,
           child: Text('$reps reps of $weight lbs'),
         ),
@@ -419,7 +423,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget> [
-            ExerciseWidget(),
+            ExerciseWidget(Color(0xffD4D2D5)),
             //TextButton(onPressed: removeStudent, child: Text(removeText)),
           ],
         ),

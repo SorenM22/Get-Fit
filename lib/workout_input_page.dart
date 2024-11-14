@@ -43,7 +43,13 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
   }
 
   void addExercise() {
-    exercises.add(const ExerciseWidget());
+    Color color;
+    if(exercises.length % 2 == 0) {
+      color = Color(0xffD4D2D5);
+    } else {
+      color = Color(0xffAAA8AA);
+    }
+    exercises.add(ExerciseWidget(color));
     setState(() {});
   }
 

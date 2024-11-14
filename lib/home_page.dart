@@ -31,11 +31,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    db.doc(user.getCurrentUserUID()).get().then((grabColor){
+     db.doc(user.getCurrentUserUID()).get().then((grabColor){
       profileColor = grabColor.get("Profile Color");
     });
 
-    db.doc(user.getCurrentUserUID()).get().then((grabName){
+     db.doc(user.getCurrentUserUID()).get().then((grabName){
       profileInitial = grabName.get("Name")[0];
     });
 
@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child:  CircleAvatar(
               radius: 25,
               backgroundColor: profileColor.toColor, // Circle color
-              child: const Text('P',
+              child: Text(profileInitial,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,

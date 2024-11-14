@@ -27,12 +27,18 @@ class _MyHomePageState extends State<MyHomePage> {
   final db = FirebaseFirestore.instance.collection("User_Data");
 
   String profileColor = Colors.black.hex;
+  String profileInitial = 'P';
 
   @override
   void initState() {
     db.doc(user.getCurrentUserUID()).get().then((grabColor){
       profileColor = grabColor.get("Profile Color");
     });
+
+    db.doc(user.getCurrentUserUID()).get().then((grabName){
+      profileInitial = grabName.get("Name")[0];
+    });
+
     super.initState();
   }
 

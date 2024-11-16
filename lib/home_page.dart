@@ -120,6 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 }
 
+                //assigns the profile initial while having a fallback of 'P'
+                profileInitial = snapshot.data.toString() ?? 'P';
+
                 return CircleAvatar(
                   radius: 25,
                   backgroundColor: profileColor.toColor, // Circle color

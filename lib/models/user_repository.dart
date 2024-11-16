@@ -49,5 +49,9 @@ class UserRepository extends GetxController{
     return profileInitial;
   }
 
+  Stream<String> getProfileInitialStream() async* {
+    yield await getCurrentProfileInitial() ?? 'P';
+  }
+
 
 }

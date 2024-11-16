@@ -29,15 +29,16 @@ class _MyHomePageState extends State<MyHomePage> {
   String profileColor = Colors.black.hex;
   String profileInitial = 'P';
 
+
   @override
   void initState() {
-     db.doc(user.getCurrentUserUID()).get().then((grabColor){
-      profileColor = grabColor.get("Profile Color");
-    });
+    //  db.doc(user.getCurrentUserUID()).get().then((grabColor){
+    //   profileColor = grabColor.get("Profile Color");
+    // });
 
-     db.doc(user.getCurrentUserUID()).get().then((grabName){
-      profileInitial = grabName.get("Name")[0];
-    });
+    //  db.doc(user.getCurrentUserUID()).get().then((grabName){
+    //   profileInitial = grabName.get("Name")[0];
+    // });
 
     super.initState();
   }
@@ -94,15 +95,42 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child:  CircleAvatar(
-              radius: 25,
-              backgroundColor: profileColor.toColor, // Circle color
-              child: Text(profileInitial,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
+            child:  StreamBuilder<Object>(
+              stream: user.getProfileInitialStream(),
+              builder: (context, snapshot) {
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircleAvatar(
+                      radius: 25,
+                      backgroundColor: profileColor.toColor,
+                      child: CircularProgressIndicator(
+                        color: Colors.lightGreen,)
+                  );
+                } else if (snapshot.hasError) {
+                  return CircleAvatar(
+                    radius: 25,
+                    backgroundColor: profileColor.toColor,
+                    child: const Text(
+                      '!',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20
+                      ),
+                    ),
+                  );
+                }
+
+                return CircleAvatar(
+                  radius: 25,
+                  backgroundColor: profileColor.toColor, // Circle color
+                  child: Text(profileInitial,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                );
+              }
             ),
           ),
         ),

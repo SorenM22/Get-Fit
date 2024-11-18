@@ -36,20 +36,34 @@ class _HistoryPageState extends State<HistoryPageImplementation> {
 
   List<Widget> items = [];
 
+  // Future<void> retrieveData() async {
+  //   QuerySnapshot data = await db.get();
+  //   data.docs.asMap().forEach((key, value) {
+  //     final nameData = value.get('Name');
+  //     items.add(ListItem(name: nameData));
+  //   });
+  //   setState(() {
+  //
+  //   });
+  // }
+
+  Future<void> populateItems(QuerySnapshot data) async {
+    // var dataMap = data.docs.asMap();
+    // dataMap.forEach((i, value) {
+    //   data.
+    //   print(value.id);
+      // var dataValue = value.get("sets");
+      // items.add(ListItem(name: value.id, time: dataValue.toString()));
+    // });
+  }
+
   Future<void> retrieveData() async {
     String? userID = userRepo.getCurrentUserUID();
-    final CollectionReference workouts = userData.doc(userID).collection("Workout_Data");
-    QuerySnapshot data = await workouts.get();
-    print(await userData.doc(userID).get());
+    final workouts = userData.doc(userID).collection("Workout_Data");
 
-    print(workouts);
-    print(data);
-    print(userID);
-    print(data.docs);
-    data.docs.asMap().forEach((key, value) {
-      print(value);
-    });
-    // items.add(ListItem)
+    print(workouts.doc());
+
+    await workouts.get().then(populateItems);
     setState(() {
 
     });
@@ -91,9 +105,13 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: Text(truncateString(name))),
-        const Expanded(
-            child: Text('This is another text input')
+        Flexible(
+            child: Text("Workout: $name")
+        ),
+        Flexible(
+            child: Center(
+              child: Text(time),
+            )
         )
       ]
     );

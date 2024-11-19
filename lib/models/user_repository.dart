@@ -28,14 +28,14 @@ class UserRepository extends GetxController{
     return user?.uid; // This returns null if the user is not logged in
   }
 
-  Future<String?> getCurrentProfileColor() async{
+  Future<Color?> getCurrentProfileColor() async{
     String profileColor = Colors.black.hex;
 
     await _db.doc(getCurrentUserUID()).get().then((grabColor){
       profileColor = grabColor.get("Profile Color");
     });
 
-    return profileColor;
+    return profileColor.toColor;
   }
 
 

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ctrl_alt_defeat/history_page.dart';
 import 'package:ctrl_alt_defeat/models/authentication_repository.dart';
+import 'package:ctrl_alt_defeat/views/profile_avatar_widget.dart';
 import 'package:ctrl_alt_defeat/workout_pref_page.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
@@ -95,46 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child:  StreamBuilder<Object>(
-              stream: user.getProfileInitialStream(),
-              builder: (context, snapshot) {
-
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircleAvatar(
-                      radius: 25,
-                      backgroundColor: profileColor.toColor,
-                      child: CircularProgressIndicator(
-                        color: Colors.lightGreen,)
-                  );
-                } else if (snapshot.hasError) {
-                  return CircleAvatar(
-                    radius: 25,
-                    backgroundColor: profileColor.toColor,
-                    child: const Text(
-                      '!',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20
-                      ),
-                    ),
-                  );
-                }
-
-                //assigns the profile initial while having a fallback of 'P'
-                profileInitial = snapshot.data.toString() ?? 'P';
-
-                return CircleAvatar(
-                  radius: 25,
-                  backgroundColor: profileColor.toColor, // Circle color
-                  child: Text(profileInitial,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                );
-              }
-            ),
+            child: ProfileAvatar(userID: user.getCurrentUserUID()!),
           ),
         ),
       ),

@@ -121,7 +121,9 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         }
 
-        return const Text("Loading",textAlign: TextAlign.center);
+        return const Scaffold(
+          body: Text("Loading",textAlign: TextAlign.center),
+        );
 
     }
     );

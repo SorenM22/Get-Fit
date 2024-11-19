@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _tappedBottomNavBar(int index) {
     setState(() {
-
+      _selectedPage = index;
       switch (index){
         case 2:
           homeContentWindow = WorkoutPrefPage();
@@ -118,7 +118,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _selectedPage,
-        selectedItemColor: Theme.of(context).primaryColor,
+
+        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
+        unselectedItemColor: Theme.of(context).colorScheme.onSecondary,
+
         onTap: _tappedBottomNavBar,
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

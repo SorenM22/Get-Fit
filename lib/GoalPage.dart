@@ -7,6 +7,9 @@ import 'package:get/get.dart';
 
 final TextEditingController goalController = TextEditingController();
 
+List<Widget> weightGoals = [];
+List<Widget> cardioGoals = [];
+
 class GoalPage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -17,8 +20,6 @@ class GoalPage extends StatefulWidget{
 
 class GoalState extends State<GoalPage>{
   final userRepo = Get.put(UserRepository());
-  List<Widget> weightGoals = [];
-  List<Widget> cardioGoals = [];
 
   void _showOptionsForAdd() {
     showDialog(
@@ -93,18 +94,6 @@ class GoalState extends State<GoalPage>{
         .doc(type)
         .collection(type)
         .add({"Goal": goal});
-
-    /*setState(() {
-      final Map<String, List<Widget>> itemMap = {
-        'Cardio': cardioGoals,
-        'Weight': weightGoals,
-      };
-
-      final list = itemMap[type];
-      if (list != null) {
-        list.add(GoalWidget(name: '$type $goal'));
-      }
-    });*/
   }
 
   @override
@@ -156,14 +145,71 @@ class GoalState extends State<GoalPage>{
           ]
       );
   }
-
 }
 
-class GoalWidget extends StatelessWidget {
-  const GoalWidget({super.key,required this.name});
+
+class GoalWidget extends StatefulWidget {
+  GoalWidget({super.key, required this.name});
   final String name;
+
+  @override
+  State<GoalWidget> createState() => _GoalWidgetState();
+}
+
+class _GoalWidgetState extends State<GoalWidget> {
+  bool _isDeleted = false;
+  final userRepo = Get.put(UserRepository());
+  String needToFind = "";
+
   @override
   Widget build(BuildContext context) {
-    return Wrap(children: [Text(name)]);
+    if (_isDeleted) {
+      return const SizedBox.shrink(); // Return an empty widget when deleted
+    }
+
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min, // Ensure Row takes up only as much space as needed
+          mainAxisAlignment: MainAxisAlignment.center, // Center horizontally
+          children: [
+            Text(widget.name), // Access 'name' using the 'widget' property
+            IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+              onPressed: () {
+                setState(() {
+                  // iterate over all the the items in the cardio and weight
+                  // lists then see each element and check if that element has the same
+                  // field as the name then delete that one out of the database
+                  for(int i = 0; i < weightGoals.length; i++){
+                    goalRemove("Cardio", widget.name);
+                    goalRemove("Weight", widget.name);
+                  }
+                  _isDeleted = true;
+                });
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  void goalRemove(String type, String DocDelete) async {
+    String? userId = userRepo.getCurrentUserUID();
+    final databaseReference = FirebaseFirestore.instance.collection("User_Data");
+    databaseReference
+        .doc(userId)
+        .collection("Goal_Data")
+        .doc(type)
+        .collection(type)
+    // need correct doc string to grab
+        .doc(DocDelete)
+        .delete();
   }
 }

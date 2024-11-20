@@ -42,62 +42,56 @@ class _HistoryPageState extends State<HistoryPageImplementation> {
 
     print(userID);
 
-    workouts.get().then(
-        (querySnapshot) {
+    await workouts.get().then(
+        (exerciseQuerySnapshot) {
           print("completed");
-          for(var docSnapshot in querySnapshot.docs) {
-            print(docSnapshot.id);
-            var itemToAdd = ListItem(id: docSnapshot.id);
-            items.add(itemToAdd);
-            setState((){});
-            print(items);
-            docSnapshot.reference.collection('Exercise_Name').get().then(
-                (querySnapshot) {
-                  print("second completed");
-                  for (var docSnapshot in querySnapshot.docs) {
-                    itemToAdd.addSet(5, 100);
-                    print(docSnapshot.data().values);
-                  }
+          for(var exerciseDocSnapshot in exerciseQuerySnapshot.docs) {
+            var sets = [];
+            exerciseDocSnapshot.reference.collection('Exercise_Name').get().then(
+              (setQuerySnapshot) {
+                print("second completed");
+                for (var setDocSnapshot in setQuerySnapshot.docs) {
+                  sets.add(setDocSnapshot.data().values.first);
                 }
+              }
             );
+            print(sets);
+            items.add(ListItem(id: exerciseDocSnapshot.id,sets: sets));
           }
         }
     );
   }
 
-  @override void initState() {
-    super.initState();
-    retrieveData();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: items[index],
+    return FutureBuilder(
+        future: retrieveData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text(widget.title),
+                ),
+                body: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: items[index],
+                    );
+                  },
+                )
             );
-          },
-        )
+          }
+          return const Text("Loading");
+        }
     );
   }
 }
 
 class ListItem extends StatefulWidget {
-  ListItem({super.key, required this.id});
+  ListItem({super.key, required this.id, required this.sets});
   final String id;
-
-  var sets = [];
-
-  bool addSet(int reps, int weight) {
-    sets.add(reps);
-    return true;
-  }
+  final sets;
 
   String getId() {
     return id;
@@ -108,7 +102,9 @@ class ListItem extends StatefulWidget {
   }
 
   @override
-  State<ListItem> createState() => _ListItemState();
+  State<ListItem> createState() {
+    return _ListItemState();
+  }
 }
 
 class _ListItemState extends State<ListItem> {

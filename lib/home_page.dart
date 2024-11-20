@@ -31,7 +31,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     db.doc(user.getCurrentUserUID()).get().then((grabColor){
-      profileColor = grabColor.get("Profile Color");
+      if(grabColor.get("Profile Color")){
+        profileColor = grabColor.get("Profile Color");
+      } else {
+        db.doc(user.getCurrentUserUID()).set(
+          {'Profile Color': Colors.blue.hex},
+          SetOptions(merge: true),
+        );
+      }
+
     });
     super.initState();
   }

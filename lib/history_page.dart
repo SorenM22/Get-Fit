@@ -36,37 +36,33 @@ class _HistoryPageState extends State<HistoryPageImplementation> {
 
   List<Widget> items = [];
 
-  // Future<void> retrieveData() async {
-  //   QuerySnapshot data = await db.get();
-  //   data.docs.asMap().forEach((key, value) {
-  //     final nameData = value.get('Name');
-  //     items.add(ListItem(name: nameData));
-  //   });
-  //   setState(() {
-  //
-  //   });
-  // }
-
-  Future<void> populateItems(QuerySnapshot data) async {
-    // var dataMap = data.docs.asMap();
-    // dataMap.forEach((i, value) {
-    //   data.
-    //   print(value.id);
-      // var dataValue = value.get("sets");
-      // items.add(ListItem(name: value.id, time: dataValue.toString()));
-    // });
-  }
-
   Future<void> retrieveData() async {
     String? userID = userRepo.getCurrentUserUID();
     final workouts = userData.doc(userID).collection("Workout_Data");
 
-    print(workouts.doc());
+    print(userID);
 
-    await workouts.get().then(populateItems);
-    setState(() {
-
-    });
+    workouts.get().then(
+        (querySnapshot) {
+          print("completed");
+          for(var docSnapshot in querySnapshot.docs) {
+            print(docSnapshot.id);
+            var itemToAdd = ListItem(id: docSnapshot.id);
+            items.add(itemToAdd);
+            setState((){});
+            print(items);
+            docSnapshot.reference.collection('Exercise_Name').get().then(
+                (querySnapshot) {
+                  print("second completed");
+                  for (var docSnapshot in querySnapshot.docs) {
+                    itemToAdd.addSet(5, 100);
+                    print(docSnapshot.data().values);
+                  }
+                }
+            );
+          }
+        }
+    );
   }
 
   @override void initState() {
@@ -92,29 +88,43 @@ class _HistoryPageState extends State<HistoryPageImplementation> {
   }
 }
 
-class ListItem extends StatelessWidget {
-  const ListItem({super.key, required this.name, required this.time});
-  final String name;
-  final String time;
+class ListItem extends StatefulWidget {
+  ListItem({super.key, required this.id});
+  final String id;
+
+  var sets = [];
+
+  bool addSet(int reps, int weight) {
+    sets.add(reps);
+    return true;
+  }
+
+  String getId() {
+    return id;
+  }
 
   String truncateString(String str) {
     return str.length < 10 ? str : "${str.substring(0, 10)}...";
   }
 
   @override
+  State<ListItem> createState() => _ListItemState();
+}
+
+class _ListItemState extends State<ListItem> {
+  @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        Flexible(
-            child: Text("Workout: $name")
-        ),
-        Flexible(
-            child: Center(
-              child: Text(time),
-            )
-        )
-      ]
+        children: [
+          Flexible(
+              child: Text("Workout: ${widget.truncateString(widget.getId())}")
+          ),
+          Flexible(
+              child: Center(
+                child: widget.sets.isEmpty ? Text("No Data") : Text(widget.sets[0]),
+              )
+          )
+        ]
     );
   }
 }
-

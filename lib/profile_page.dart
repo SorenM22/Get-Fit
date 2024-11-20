@@ -61,7 +61,11 @@ class _MyProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.pop(context, null); // Close the dialog without any change
               },
-              child: const Text('Cancel'),
+              child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary),
+                  ),
             ),
             TextButton(
               onPressed: () {
@@ -72,7 +76,11 @@ class _MyProfilePageState extends State<ProfilePage> {
                     SetOptions(merge: true),
                   );
               },
-              child: const Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary),
+              ),
             ),
           ],
         );
@@ -113,13 +121,20 @@ class _MyProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const Text(
+            Text(
               'Profile',
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(
+                fontSize: 24,
+                color: Theme.of(context).colorScheme.onPrimary
+              ),
             ),
             ElevatedButton(
               onPressed: _openColorPicker,
-              child: const Text('Pick a Color'),
+              child: Text('Pick a Color',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onPrimary
+                )),
             ),
             const SizedBox(height: 20),
           ],

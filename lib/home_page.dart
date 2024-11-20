@@ -22,17 +22,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedPage = 0;
+  String _username = 'USER NAME';
   final user = Get.put(UserRepository());
   final db = FirebaseFirestore.instance.collection("User_Data");
-  late final userCollection;
 
   String profileColor = Colors.black.hex;
+
+  @override
+  void initState() {
+    db.doc(user.getCurrentUserUID()).get().then((grabColor){
+      profileColor = grabColor.get("Profile Color");
+    });
+    super.initState();
+  }
 
   Widget homeContentWindow = GoalWorkoutPage(title: "Goal/Workout Page");
 
   void _tappedBottomNavBar(int index) {
     setState(() {
-
+      _selectedPage = index;
       switch (index){
         case 2:
           homeContentWindow = WorkoutPrefPage();
@@ -44,88 +52,79 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+
+  void _pressedAccountButton() {
+    throw UnimplementedError("Unimplemented _pressedAccountButton");
+  }
+
+  void _onLogoutSelected() {
+    throw('Logout');
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: db.doc(user.getCurrentUserUID()).get(),
-    builder:  (context, snapshot) {
-        if (snapshot.hasData) {
-
-          profileColor = snapshot.data?.get("Profile Color");
-
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Theme
-                  .of(context)
-                  .colorScheme
-                  .inversePrimary,
-              title: Text(widget.title),
-              leading: PopupMenuButton<String>(
-                onSelected: (value) {
-                  if (value == 'profile') {
-                    _tappedProfileButton();
-                  } else if (value == 'logout') {
-                    AuthenticationRepository.instance.signout();
-                  }
-                },
-                itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
-                    value: 'profile',
-                    child: Text('Your Profile'),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'logout',
-                    child: Text('Log Out'),
-                  ),
-                ],
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    radius: 25,
-                    backgroundColor: profileColor.toColor, // Circle color
-                    child: const Text('P',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+        leading: PopupMenuButton<String>(
+          onSelected: (value) {
+            if (value == 'profile') {
+              _tappedProfileButton();
+            } else if (value == 'logout') {
+              AuthenticationRepository.instance.signout();
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            const PopupMenuItem<String>(
+              value: 'profile',
+              child: Text('Your Profile'),
+            ),
+            const PopupMenuItem<String>(
+              value: 'logout',
+              child: Text('Log Out'),
+            ),
+          ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:  CircleAvatar(
+              radius: 25,
+              backgroundColor: profileColor.toColor, // Circle color
+              child: const Text('P',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
                 ),
               ),
             ),
-            body: homeContentWindow,
-            bottomNavigationBar: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.auto_graph_rounded),
-                  label: 'History',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: 'Settings',
-                ),
-              ],
-              currentIndex: _selectedPage,
-              selectedItemColor: Theme
-                  .of(context)
-                  .primaryColor,
-              onTap: _tappedBottomNavBar,
-            ),
-            floatingActionButtonLocation: FloatingActionButtonLocation
-                .centerFloat,
-          );
-        }
+          ),
+        ),
+      ),
+      body: homeContentWindow,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.auto_graph_rounded),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+        currentIndex: _selectedPage,
 
-        return const Scaffold(
-          body: Text("Loading",textAlign: TextAlign.center),
-        );
+        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
+        unselectedItemColor: Theme.of(context).colorScheme.onSecondary,
 
-    }
+        onTap: _tappedBottomNavBar,
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 

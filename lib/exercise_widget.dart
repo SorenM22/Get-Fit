@@ -7,19 +7,24 @@ import 'package:flutter/cupertino.dart';
 
 class ExerciseWidget extends StatefulWidget {
 
+  CollectionReference<Map<String, dynamic>> exerciseRef;
   Color color;
 
-  ExerciseWidget(this.color, {super.key});
+  ExerciseWidget(this.exerciseRef, this.color, {super.key});
 
   @override
-  State<ExerciseWidget> createState() => _ExerciseWidget(color);
+  State<ExerciseWidget> createState() => _ExerciseWidget(exerciseRef, color);
 
 }
 
 class _ExerciseWidget extends State<ExerciseWidget> {
 
-  _ExerciseWidget(this.widgetColor) {
+  //DocumentReference<Map<String, dynamic>> workoutRef;
+  CollectionReference<Map<String, dynamic>> exerciseRef;
+
+  _ExerciseWidget(this.exerciseRef, this.widgetColor) {
     populateMenu();
+    updateLocalData();
   }
 
   final databaseReference = FirebaseFirestore.instance;
@@ -36,7 +41,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
   double boxWidth = 500;
 
   Size boxSize = Size(250,400);
-  List<Widget> sets = [];
+  List<SetWidget> sets = [];
 
   void toggleOpen() {
     setState(() {
@@ -56,11 +61,14 @@ class _ExerciseWidget extends State<ExerciseWidget> {
   String newExercise = '';
 
   void newSet() {
-    List<Widget> temp = sets;
-    sets = [SetWidget(int.parse(reps), int.parse(weight), widgetColor)];
-    sets.addAll(temp);
+    // List<SetWidget> temp = sets;
+    // sets = [SetWidget(int.parse(reps), int.parse(weight), widgetColor)];
+    // sets.addAll(temp);
+
+    sets.add( SetWidget(int.parse(reps), int.parse(weight), widgetColor) );
     setState(() {});
   }
+
 
   void populateMenu() {
     List<String>;
@@ -129,6 +137,36 @@ class _ExerciseWidget extends State<ExerciseWidget> {
       return true;
     }
   }
+
+  void updateDatabase() async{
+    QuerySnapshot snap = await exerciseRef.get();
+    final allData = snap.docs.map((doc) => doc.data());
+
+    for (int i = allData.length; i < sets.length; i++) {
+      int setReps = sets[i].reps;
+      int setWeight = sets[i].weight;
+      Map<String, int> data = {'Reps': setReps, 'Weight': setWeight };
+      exerciseRef.doc('$i').set(data);
+    }
+  }
+
+
+
+  Future<void> updateLocalData() async{
+    QuerySnapshot snap = await exerciseRef.get();
+    final allData = snap.docs.map((doc) => doc.data());
+
+    for (final e in allData) {
+      String setString = e.toString();
+      reps = setString.substring( setString.indexOf(':') + 2,  setString.indexOf(","));
+      setString = setString.substring( setString.indexOf(","));
+      weight = setString.substring( setString.indexOf(':') + 2, setString.indexOf("}"));
+      newSet();
+    }
+  }
+
+
+
 
 
   @override
@@ -342,6 +380,9 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                 ),
               ),
             ),
+
+            TextButton(onPressed: updateDatabase, child: Text('test')),
+
           ],
         );
   }
@@ -350,6 +391,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
 }
 
 class SetWidget extends StatelessWidget {
+
   int reps = 0;
   int weight = 0;
   Color color;
@@ -413,6 +455,14 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
+  final exerciseRef = FirebaseFirestore.instance
+      .collection('User_Data')
+      .doc('Alvo2aU5lfcDDVVnNoJ1yErGkqz1')
+      .collection('Workout_Data')
+      .doc('test').collection('Exercise_Name');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -423,8 +473,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget> [
-            ExerciseWidget(Color(0xffD4D2D5)),
-            //TextButton(onPressed: removeStudent, child: Text(removeText)),
+            ExerciseWidget(exerciseRef, Color(0xffD4D2D5)),
           ],
         ),
       ),

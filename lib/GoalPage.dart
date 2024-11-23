@@ -159,7 +159,6 @@ class GoalWidget extends StatefulWidget {
 class _GoalWidgetState extends State<GoalWidget> {
   bool _isDeleted = false;
   final userRepo = Get.put(UserRepository());
-  String needToFind = "";
 
   @override
   Widget build(BuildContext context) {
@@ -181,16 +180,12 @@ class _GoalWidgetState extends State<GoalWidget> {
                 Icons.delete,
                 color: Theme.of(context).colorScheme.onSecondary,
               ),
-              onPressed: () {
+              onPressed: () async {
+                // Delete the goal from both "Cardio" and "Weight" collections
+                await removeGoal("Cardio", widget.name);
+                await removeGoal("Weight", widget.name);
                 setState(() {
-                  // iterate over all the the items in the cardio and weight
-                  // lists then see each element and check if that element has the same
-                  // field as the name then delete that one out of the database
-                  for(int i = 0; i < weightGoals.length; i++){
-                    goalRemove("Cardio", widget.name);
-                    goalRemove("Weight", widget.name);
-                  }
-                  _isDeleted = true;
+                  _isDeleted = true; // Mark widget as deleted
                 });
               },
             ),
@@ -200,16 +195,22 @@ class _GoalWidgetState extends State<GoalWidget> {
     );
   }
 
-  void goalRemove(String type, String DocDelete) async {
+  Future<void> removeGoal(String type, String goalName) async {
     String? userId = userRepo.getCurrentUserUID();
     final databaseReference = FirebaseFirestore.instance.collection("User_Data");
-    databaseReference
+
+    // Query to find the document ID where the "Goal" matches
+    final querySnapshot = await databaseReference
         .doc(userId)
         .collection("Goal_Data")
         .doc(type)
         .collection(type)
-    // need correct doc string to grab
-        .doc(DocDelete)
-        .delete();
+        .where("Goal", isEqualTo: goalName)
+        .get();
+
+    // Delete the matching document(s)
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
   }
 }

@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       ),
       // change to .dark for dark mode need
       // TODO add in switch case in settings to change this
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       home: const MyHomePage(title: 'GetFit'),
     );
   }

@@ -22,7 +22,7 @@ class AuthenticationRepository extends GetxController {
 
   //sets the landing screen based on if a user is logged in or not
   createScreen(User? user) {
-    user == null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
+    user == null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page",));
 
   }
 

@@ -1,3 +1,4 @@
+import 'package:ctrl_alt_defeat/models/user_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/home_page.dart';
@@ -9,6 +10,8 @@ import 'package:ctrl_alt_defeat/ThemeController.dart';
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) => Get.put(AuthenticationRepository()));
+  final themeController = Get.put(ThemeController());
+  themeController.getTheme();
   runApp(MyApp());
 }
 
@@ -19,8 +22,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final themeController = Get.put(ThemeController());
-    themeController.onLoad();
+    final themeController = Get.find<ThemeController>();
 
     return Obx(() {
       // The app will reactively rebuild based on the theme state

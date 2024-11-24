@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import '../ThemeController.dart';
 import '../authentication_page.dart';
 import '../home_page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,6 +23,8 @@ class AuthenticationRepository extends GetxController {
 
   //sets the landing screen based on if a user is logged in or not
   createScreen(User? user) {
+    final themeController = Get.put(ThemeController());
+    themeController.getTheme();
     user == null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
 
   }

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:get/get.dart';
+import 'package:ctrl_alt_defeat/ThemeController.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key,required this.title});
@@ -137,6 +138,11 @@ class _MyProfilePageState extends State<ProfilePage> {
                 )),
             ),
             const SizedBox(height: 20),
+            ElevatedButton(onPressed: () {
+                final themeController = Get.find<ThemeController>();
+                themeController.toggleTheme();
+            },
+            child: Text('Dark Theme', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary))),
           ],
         ),
       ),

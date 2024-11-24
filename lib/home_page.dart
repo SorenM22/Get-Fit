@@ -26,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final user = Get.put(UserRepository());
   final db = FirebaseFirestore.instance.collection("User_Data");
 
-  String profileColor = Colors.black.hex;
+  String profileColor = Colors.blue.hex;
 
   @override
   void initState() {

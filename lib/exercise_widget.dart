@@ -66,9 +66,9 @@ class _ExerciseWidget extends State<ExerciseWidget> {
     // sets.addAll(temp);
 
     sets.add( SetWidget(int.parse(reps), int.parse(weight), widgetColor) );
+    updateDatabase();
     setState(() {});
   }
-
 
   void populateMenu() {
     List<String>;
@@ -149,8 +149,6 @@ class _ExerciseWidget extends State<ExerciseWidget> {
       exerciseRef.doc('$i').set(data);
     }
   }
-
-
 
   Future<void> updateLocalData() async{
     QuerySnapshot snap = await exerciseRef.get();
@@ -381,8 +379,6 @@ class _ExerciseWidget extends State<ExerciseWidget> {
               ),
             ),
 
-            TextButton(onPressed: updateDatabase, child: Text('test')),
-
           ],
         );
   }
@@ -461,7 +457,10 @@ class _MyHomePageState extends State<MyHomePage> {
       .collection('User_Data')
       .doc('Alvo2aU5lfcDDVVnNoJ1yErGkqz1')
       .collection('Workout_Data')
-      .doc('test').collection('Exercise_Name');
+      .doc('test')
+      .collection('Exercises')
+      .doc('Test_Exercise')
+      .collection('Sets');
 
   @override
   Widget build(BuildContext context) {

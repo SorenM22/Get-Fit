@@ -35,6 +35,26 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
   final db = FirebaseFirestore.instance.collection('User_Data');
   final userRepo = Get.put(UserRepository());
 
+  late CollectionReference<Map<String, dynamic>> workoutRef;
+
+  
+
+  _WorkoutInputPageState() {
+    String? UID = userRepo.getCurrentUserUID();
+
+    String workoutID = DateTime.now().toString();
+
+
+    Map<String, int> data = {};
+    db.doc(UID).collection('Workout_Data').doc(workoutID).set(data);
+
+    workoutRef = db.doc(UID).collection('Workout_Data').doc(workoutID).collection('Exercises');
+
+    updateLocalData();
+  }
+
+  //_WorkoutInputPageState(this.workoutRef, {super.key});
+
   List<ExerciseWidget> exercises = [];
 
   @override
@@ -42,7 +62,25 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
     super.initState();
   }
 
+  Future<void> updateLocalData() async {
+
+    //String data = await workoutRef.get().data().toString();
+    //print(data);
+
+
+
+
+  }
+
+
   void addExercise() {
+
+    Map<String, int> data = {};
+    workoutRef.doc(exercises.length.toString()).set(data);
+
+    CollectionReference<Map<String, dynamic>> exerciseRef =
+    workoutRef.doc(exercises.length.toString()).collection('Sets');
+
     Color color;
     if(exercises.length % 2 == 0) {
       color = Color(0xffD4D2D5);
@@ -50,8 +88,7 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
       color = Color(0xffAAA8AA);
     }
 
-    //exercises.add(ExerciseWidget(color));
-
+    exercises.add(ExerciseWidget(exerciseRef, color));
 
     setState(() {});
   }

@@ -1,8 +1,6 @@
-import 'package:ctrl_alt_defeat/models/user_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
+import 'package:ctrl_alt_defeat/presenter/history_presenter.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key, required this.title});
@@ -31,35 +29,19 @@ class HistoryPageImplementation extends StatefulWidget {
   State<HistoryPageImplementation> createState() => _HistoryPageState();
 }
 class _HistoryPageState extends State<HistoryPageImplementation> {
-  final userRepo = Get.put(UserRepository());
-  final userData = FirebaseFirestore.instance.collection('User_Data');
 
   List<Widget> items = [];
 
   Future<void> retrieveData() async {
-    String? userID = userRepo.getCurrentUserUID();
-    final workouts = userData.doc(userID).collection("Workout_Data");
+    var historyPresenter = HistoryPresenter();
 
-    print(userID);
-
-    await workouts.get().then(
-        (exerciseQuerySnapshot) {
-          print("completed");
-          for(var exerciseDocSnapshot in exerciseQuerySnapshot.docs) {
-            var sets = [];
-            exerciseDocSnapshot.reference.collection('Exercise_Name').get().then(
-              (setQuerySnapshot) {
-                print("second completed");
-                for (var setDocSnapshot in setQuerySnapshot.docs) {
-                  sets.add(setDocSnapshot.data().values.first);
-                }
-              }
-            );
-            print(sets);
-            items.add(ListItem(id: exerciseDocSnapshot.id,sets: sets));
-          }
+    for(var workout in await historyPresenter.getWorkoutIds()) {
+      for(var exercise in await historyPresenter.getExercises(workout)) {
+        for (var sets in await historyPresenter.getSets(workout, exercise)) {
+          items.add(ListItem(id: workout, sets: sets));
         }
-    );
+      }
+    }
   }
 
   @override
@@ -98,7 +80,7 @@ class ListItem extends StatefulWidget {
   }
 
   String truncateString(String str) {
-    return str.length < 10 ? str : "${str.substring(0, 10)}...";
+    return str.length < 10 ? str : str.substring(0, 16);
   }
 
   @override
@@ -117,7 +99,7 @@ class _ListItemState extends State<ListItem> {
           ),
           Flexible(
               child: Center(
-                child: widget.sets.isEmpty ? Text("No Data") : Text(widget.sets[0]),
+                child: widget.sets.isEmpty ? Text("No Data") : Text(widget.sets[0].toString()),
               )
           )
         ]

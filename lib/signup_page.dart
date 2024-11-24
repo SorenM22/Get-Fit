@@ -13,7 +13,7 @@ class SignupPage extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Sign Up"),
+            title: Text("Sign Up", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
             leading: IconButton(onPressed: (){
               Navigator.pop(context);
             }, icon: Icon(Icons.arrow_back)),
@@ -42,11 +42,11 @@ class signupForm extends StatelessWidget {
 @override
 Widget build(BuildContext context) {
 
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image(image: AssetImage("assets/login_Image/Workout_ClipArt.jpg")),
-        Text("All fields are required", style: TextStyle(fontSize: 20),),
+        Text("All fields are required", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.onPrimary),),
       ],
     );
 }
@@ -73,7 +73,7 @@ class signupInputFields extends StatelessWidget {
               TextFormField(
                 controller: authControl.name,
                 decoration: InputDecoration(
-                    label: Text("Name"),
+                    label: Text("Name", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                     prefixIcon: Icon(
                         Icons.person_outline_rounded,
                         color: Colors.grey),
@@ -87,7 +87,7 @@ class signupInputFields extends StatelessWidget {
               TextFormField(
                 controller: authControl.email,
                 decoration: InputDecoration(
-                    label: Text("Email"),
+                    label: Text("Email", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                     prefixIcon: Icon(
                         Icons.mail_outline_sharp,
                         color: Colors.grey
@@ -103,7 +103,7 @@ class signupInputFields extends StatelessWidget {
                 obscureText: true,
                 controller: authControl.password,
                 decoration: InputDecoration(
-                      label: Text("Password"),
+                      label: Text("Password", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                       prefixIcon: Icon(
                           Icons.key,
                           color: Colors.grey
@@ -138,7 +138,7 @@ class signupInputFields extends StatelessWidget {
 
                         }
                       },
-                      child: Text("Sign up")
+                      child: Text("Sign up", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary))
                   ),
                 ),
               ),

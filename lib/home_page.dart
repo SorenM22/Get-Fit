@@ -26,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final user = Get.put(UserRepository());
   final db = FirebaseFirestore.instance.collection("User_Data");
 
-  String profileColor = Colors.black.hex;
+  String profileColor = Colors.blue.hex;
 
   @override
   void initState() {
@@ -74,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
+        title: Text(widget.title, style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
         leading: PopupMenuButton<String>(
           onSelected: (value) {
             if (value == 'profile') {

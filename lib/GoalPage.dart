@@ -7,6 +7,9 @@ import 'package:get/get.dart';
 
 final TextEditingController goalController = TextEditingController();
 
+List<Widget> weightGoals = [];
+List<Widget> cardioGoals = [];
+
 class GoalPage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -17,15 +20,13 @@ class GoalPage extends StatefulWidget{
 
 class GoalState extends State<GoalPage>{
   final userRepo = Get.put(UserRepository());
-  List<Widget> weightGoals = [];
-  List<Widget> cardioGoals = [];
 
   void _showOptionsForAdd() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add'),
+          title: Text('Add', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
           content: Row(
             children: <Widget>[
               Expanded(
@@ -34,7 +35,7 @@ class GoalState extends State<GoalPage>{
                     Navigator.of(context).pop();
                     _showGoalDialog('Weight');
                   },
-                  child: Text('Weight'),
+                  child: Text('Weight', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                 ),
               ),
               Expanded(
@@ -43,7 +44,7 @@ class GoalState extends State<GoalPage>{
                     Navigator.of(context).pop();
                     _showGoalDialog('Cardio');
                   },
-                  child: Text('Cardio'),
+                  child: Text('Cardio', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                 ),
               ),
             ],
@@ -58,20 +59,20 @@ class GoalState extends State<GoalPage>{
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Enter your goal"),
+          title: Text("Enter your goal", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
           content: TextField(
             controller: goalController,
             decoration: InputDecoration(hintText: "Enter goal for $type"),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Cancel"),
+              child: Text("Cancel", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Submit"),
+              child: Text("Submit", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
               onPressed: () {
                 goalSubmit(type, goalController.text);
                 goalController.clear();
@@ -93,25 +94,13 @@ class GoalState extends State<GoalPage>{
         .doc(type)
         .collection(type)
         .add({"Goal": goal});
-
-    /*setState(() {
-      final Map<String, List<Widget>> itemMap = {
-        'Cardio': cardioGoals,
-        'Weight': weightGoals,
-      };
-
-      final list = itemMap[type];
-      if (list != null) {
-        list.add(GoalWidget(name: '$type $goal'));
-      }
-    });*/
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
         children: <Widget>[
-          Center(child: Text("Cardio Goals", style: TextStyle(fontSize: 24))),
+          Center(child: Text("Cardio Goals", style: TextStyle(fontSize: 24, color: Theme.of(context).colorScheme.onPrimary))),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
@@ -130,7 +119,7 @@ class GoalState extends State<GoalPage>{
               },
             ),
           ),
-          Center(child: Text("Weight Goals", style: TextStyle(fontSize: 24))),
+          Center(child: Text("Weight Goals", style: TextStyle(fontSize: 24, color: Theme.of(context).colorScheme.onPrimary))),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
@@ -151,19 +140,77 @@ class GoalState extends State<GoalPage>{
           ),
             ElevatedButton(
                 onPressed: _showOptionsForAdd,
-                child: Text("Add Goal")
+                child: Text("Add Goal", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),)
             ),
           ]
       );
   }
-
 }
 
-class GoalWidget extends StatelessWidget {
-  const GoalWidget({super.key,required this.name});
+
+class GoalWidget extends StatefulWidget {
+  GoalWidget({super.key, required this.name});
   final String name;
+
+  @override
+  State<GoalWidget> createState() => _GoalWidgetState();
+}
+
+class _GoalWidgetState extends State<GoalWidget> {
+  bool _isDeleted = false;
+  final userRepo = Get.put(UserRepository());
+
   @override
   Widget build(BuildContext context) {
-    return Wrap(children: [Text(name)]);
+    if (_isDeleted) {
+      return const SizedBox.shrink(); // Return an empty widget when deleted
+    }
+
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min, // Ensure Row takes up only as much space as needed
+          mainAxisAlignment: MainAxisAlignment.center, // Center horizontally
+          children: [
+            Text(widget.name, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)), // Access 'name' using the 'widget' property
+            IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+              onPressed: () async {
+                // Delete the goal from both "Cardio" and "Weight" collections
+                await removeGoal("Cardio", widget.name);
+                await removeGoal("Weight", widget.name);
+                setState(() {
+                  _isDeleted = true; // Mark widget as deleted
+                });
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Future<void> removeGoal(String type, String goalName) async {
+    String? userId = userRepo.getCurrentUserUID();
+    final databaseReference = FirebaseFirestore.instance.collection("User_Data");
+
+    // Query to find the document ID where the "Goal" matches
+    final querySnapshot = await databaseReference
+        .doc(userId)
+        .collection("Goal_Data")
+        .doc(type)
+        .collection(type)
+        .where("Goal", isEqualTo: goalName)
+        .get();
+
+    // Delete the matching document(s)
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
   }
 }

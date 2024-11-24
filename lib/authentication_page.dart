@@ -57,12 +57,12 @@ class AuthenticationPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Image(image: AssetImage(loginImage), height: height * 0.35),
-               const Column(
+               Column(
                   children: [
-                   Text("Welcome to MyFit!", textAlign: TextAlign.center, style: TextStyle(fontSize: 40),),
+                   Text("Welcome to MyFit!", textAlign: TextAlign.center, style: TextStyle(fontSize: 40, color: Theme.of(context).colorScheme.onPrimary),),
                    Text("The best place to record all your workouts \n May you have many wonderful workouts in the future",
                      textAlign: TextAlign.center,
-                     style: TextStyle(fontSize: 15),),
+                     style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onPrimary),),
                  ],
               ),
               Row(
@@ -78,7 +78,8 @@ class AuthenticationPage extends StatelessWidget {
 
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(),
-                      foregroundColor: Color(0xFF272727),
+                      foregroundColor: Theme.of(context).colorScheme.secondary,
+                      backgroundColor: Theme.of(context).colorScheme.onSecondary,
                       side: BorderSide(color: Color(0xFF272727)),
                       padding: EdgeInsets.symmetric(vertical:30),
                   ), child: const Text("Login")),),
@@ -96,8 +97,8 @@ class AuthenticationPage extends StatelessWidget {
                       },*/
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(),
-                        foregroundColor: Color(0xFF434343),
-                        backgroundColor: Color(0XFFb7f2f1),
+                        foregroundColor: Theme.of(context).colorScheme.primary,
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary,
                         side: BorderSide(color: Color(0xFF434343)),
                         padding: EdgeInsets.symmetric(vertical:30),
                       ),

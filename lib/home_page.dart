@@ -26,12 +26,20 @@ class _MyHomePageState extends State<MyHomePage> {
   final user = Get.put(UserRepository());
   final db = FirebaseFirestore.instance.collection("User_Data");
 
-  String profileColor = Colors.black.hex;
+  String profileColor = Colors.blue.hex;
 
   @override
   void initState() {
     db.doc(user.getCurrentUserUID()).get().then((grabColor){
-      profileColor = grabColor.get("Profile Color");
+      if(grabColor.get("Profile Color")){
+        profileColor = grabColor.get("Profile Color");
+      } else {
+        db.doc(user.getCurrentUserUID()).set(
+          {'Profile Color': Colors.blue.hex},
+          SetOptions(merge: true),
+        );
+      }
+
     });
     super.initState();
   }
@@ -40,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _tappedBottomNavBar(int index) {
     setState(() {
-
+      _selectedPage = index;
       switch (index){
         case 2:
           homeContentWindow = WorkoutPrefPage();
@@ -66,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
+        title: Text(widget.title, style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
         leading: PopupMenuButton<String>(
           onSelected: (value) {
             if (value == 'profile') {
@@ -118,7 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _selectedPage,
-        selectedItemColor: Theme.of(context).primaryColor,
+
+        selectedItemColor: Theme.of(context).colorScheme.onPrimary,
+        unselectedItemColor: Theme.of(context).colorScheme.onSecondary,
+
         onTap: _tappedBottomNavBar,
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

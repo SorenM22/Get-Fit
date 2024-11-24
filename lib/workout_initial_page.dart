@@ -1,15 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class WorkoutInitialPage extends StatelessWidget {
   const WorkoutInitialPage({super.key});
 
-  final TextStyle text = const TextStyle(
-      color: CupertinoColors.black,
-      fontSize: 30
-  );
+
 
   @override
   Widget build(BuildContext context) {
+    TextStyle text = TextStyle(
+        color: Theme.of(context).colorScheme.onPrimary,
+        fontSize: 30
+    );
+
     return Column(
       children: [
         Text(

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:get/get.dart';
+import 'package:ctrl_alt_defeat/ThemeController.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key,required this.title});
@@ -61,7 +62,11 @@ class _MyProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.pop(context, null); // Close the dialog without any change
               },
-              child: const Text('Cancel'),
+              child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary),
+                  ),
             ),
             TextButton(
               onPressed: () {
@@ -72,7 +77,11 @@ class _MyProfilePageState extends State<ProfilePage> {
                     SetOptions(merge: true),
                   );
               },
-              child: const Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary),
+              ),
             ),
           ],
         );
@@ -113,15 +122,27 @@ class _MyProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const Text(
+            Text(
               'Profile',
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(
+                fontSize: 24,
+                color: Theme.of(context).colorScheme.onPrimary
+              ),
             ),
             ElevatedButton(
               onPressed: _openColorPicker,
-              child: const Text('Pick a Color'),
+              child: Text('Pick a Color',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onPrimary
+                )),
             ),
             const SizedBox(height: 20),
+            ElevatedButton(onPressed: () {
+                final themeController = Get.find<ThemeController>();
+                themeController.toggleTheme();
+            },
+            child: Text('Dark Theme', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary))),
           ],
         ),
       ),

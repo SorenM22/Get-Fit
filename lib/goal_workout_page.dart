@@ -32,11 +32,11 @@ class _GoalWorkoutState extends State<GoalWorkoutPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             NavigationBar(
-              destinations: const [
-                NavigationDestination(icon: Text("Workout"), label: ""),
-                NavigationDestination(icon: Text("Goal"), label: ""),
+              destinations: [
+                NavigationDestination(icon: Text("Workout", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)), label: ""),
+                NavigationDestination(icon: Text("Goal", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)), label: ""),
               ],
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               selectedIndex: _selectedWorkoutOrGoal,
               onDestinationSelected: _pressedWorkoutOrGoal,
             ),

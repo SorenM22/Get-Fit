@@ -7,21 +7,29 @@ import 'package:flutter/cupertino.dart';
 
 class ExerciseWidget extends StatefulWidget {
 
-  const ExerciseWidget({super.key});
+  CollectionReference<Map<String, dynamic>> exerciseRef;
+  Color color;
+
+  ExerciseWidget(this.exerciseRef, this.color, {super.key});
 
   @override
-  State<ExerciseWidget> createState() => _ExerciseWidget();
+  State<ExerciseWidget> createState() => _ExerciseWidget(exerciseRef, color);
 
 }
 
 class _ExerciseWidget extends State<ExerciseWidget> {
 
-  _ExerciseWidget() {
+  //DocumentReference<Map<String, dynamic>> workoutRef;
+  CollectionReference<Map<String, dynamic>> exerciseRef;
+
+  _ExerciseWidget(this.exerciseRef, this.widgetColor) {
     populateMenu();
+    updateLocalData();
   }
 
   final databaseReference = FirebaseFirestore.instance;
 
+  Color widgetColor;
   String titleText = 'Exercise';
   bool _open = true;
   bool _newExercise = false;
@@ -33,7 +41,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
   double boxWidth = 500;
 
   Size boxSize = Size(250,400);
-  List<Widget> sets = [];
+  List<SetWidget> sets = [];
 
   void toggleOpen() {
     setState(() {
@@ -53,9 +61,12 @@ class _ExerciseWidget extends State<ExerciseWidget> {
   String newExercise = '';
 
   void newSet() {
-    List<Widget> temp = sets;
-    sets = [SetWidget(int.parse(reps), int.parse(weight))];
-    sets.addAll(temp);
+    // List<SetWidget> temp = sets;
+    // sets = [SetWidget(int.parse(reps), int.parse(weight), widgetColor)];
+    // sets.addAll(temp);
+
+    sets.add( SetWidget(int.parse(reps), int.parse(weight), widgetColor) );
+    updateDatabase();
     setState(() {});
   }
 
@@ -127,6 +138,34 @@ class _ExerciseWidget extends State<ExerciseWidget> {
     }
   }
 
+  void updateDatabase() async{
+    QuerySnapshot snap = await exerciseRef.get();
+    final allData = snap.docs.map((doc) => doc.data());
+
+    for (int i = allData.length; i < sets.length; i++) {
+      int setReps = sets[i].reps;
+      int setWeight = sets[i].weight;
+      Map<String, int> data = {'Reps': setReps, 'Weight': setWeight };
+      exerciseRef.doc('$i').set(data);
+    }
+  }
+
+  Future<void> updateLocalData() async{
+    QuerySnapshot snap = await exerciseRef.get();
+    final allData = snap.docs.map((doc) => doc.data());
+
+    for (final e in allData) {
+      String setString = e.toString();
+      reps = setString.substring( setString.indexOf(':') + 2,  setString.indexOf(","));
+      setString = setString.substring( setString.indexOf(","));
+      weight = setString.substring( setString.indexOf(':') + 2, setString.indexOf("}"));
+      newSet();
+    }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +176,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
             Container(
               height: 50,
               width: boxWidth,
-              color: const Color(0xffD4D2D5),
+              color: widgetColor,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
@@ -156,7 +195,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
                     Container(
-                      color: Color(0xffD4D2D5),
+                      color: widgetColor,
                       height: 50,
                       width: boxWidth,
                       child: Column(
@@ -186,7 +225,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                     Visibility(
                       visible: _newExercise,
                       child: Container(
-                        color: Color(0xffD4D2D5),
+                        color: widgetColor,
                         height: 75,
                         width: boxWidth,
                         child: Column(
@@ -250,7 +289,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                       ),
                     ),
                     Container(
-                      color: Color(0xffD4D2D5),
+                      color: widgetColor,
                       height: 90,
                       width: boxWidth,
                       child: Column(
@@ -314,7 +353,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
             Visibility(
                 visible: (_open && sets.isNotEmpty),
                 child: Container(
-                  color: Color(0xffD4D2D5),
+                  color: widgetColor,
                   width: boxWidth,
                   height: 25,
                   child:Column(
@@ -329,7 +368,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
               visible: _open,
               child: Flexible(
                 child: Container(
-                  color: Color(0xffD4D2D5),
+                  color: widgetColor,
                   width: boxWidth,
                   child: ListView.builder(
                       shrinkWrap: true,
@@ -339,6 +378,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                 ),
               ),
             ),
+
           ],
         );
   }
@@ -347,17 +387,19 @@ class _ExerciseWidget extends State<ExerciseWidget> {
 }
 
 class SetWidget extends StatelessWidget {
+
   int reps = 0;
   int weight = 0;
+  Color color;
 
-  SetWidget(this.reps, this.weight, {super.key});
+  SetWidget(this.reps, this.weight, this.color, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Flexible(
         child: Container(
-          color: Color(0xffD4D2D5),
+          color: color,
           height: 25,
           child: Text('$reps reps of $weight lbs'),
         ),
@@ -409,6 +451,17 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
+  final exerciseRef = FirebaseFirestore.instance
+      .collection('User_Data')
+      .doc('Alvo2aU5lfcDDVVnNoJ1yErGkqz1')
+      .collection('Workout_Data')
+      .doc('test')
+      .collection('Exercises')
+      .doc('Test_Exercise')
+      .collection('Sets');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -419,8 +472,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget> [
-            ExerciseWidget(),
-            //TextButton(onPressed: removeStudent, child: Text(removeText)),
+            ExerciseWidget(exerciseRef, Color(0xffD4D2D5)),
           ],
         ),
       ),

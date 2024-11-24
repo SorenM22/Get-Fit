@@ -82,13 +82,16 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
     workoutRef.doc(exercises.length.toString()).collection('Sets');
 
     Color color;
+    int colorOption;
     if(exercises.length % 2 == 0) {
-      color = Color(0xffD4D2D5);
+      colorOption = 0;
+      color = Theme.of(context).colorScheme.onPrimaryContainer;
     } else {
-      color = Color(0xffAAA8AA);
+      colorOption = 1;
+      color = Theme.of(context).colorScheme.primary;
     }
 
-    exercises.add(ExerciseWidget(exerciseRef, color));
+    exercises.add(ExerciseWidget(exerciseRef));
 
     setState(() {});
   }
@@ -140,8 +143,7 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
                     shrinkWrap: true,
                     itemCount: exercises.length,
                     itemBuilder: (context, index) => exercises[index])),
-            OutlinedButton(
-                onPressed: submitExercise, child: const Text("Submit"))
+
           ])),
       const Spacer(
         flex: 1,

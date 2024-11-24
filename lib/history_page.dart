@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/presenter/history_presenter.dart';
 
@@ -55,12 +56,10 @@ class _HistoryPageState extends State<HistoryPageImplementation> {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      child:
-                        ListTile(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        child: ListTile(
                           title: items[index],
-                        )
-                    );
+                        ));
                   },
                 ));
           }
@@ -95,6 +94,15 @@ class _WorkoutItemState extends State<WorkoutItem> {
     print("done");
   }
 
+  void editWorkout() {
+  }
+
+  void deleteExercise() {
+    historyPresenter.deleteExercise(getId());
+    retrieveData();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -102,8 +110,22 @@ class _WorkoutItemState extends State<WorkoutItem> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Flexible(
-                child: Column(children: [
-              Text("Workout: ${truncateString(getId())}"),
+                child: Column(
+                    children: [
+              Row(children: [
+                IconButton(
+                    onPressed: editWorkout,
+                    icon: Icon(
+                        color: Theme.of(context).colorScheme.onSecondary,
+                        CupertinoIcons.pencil_ellipsis_rectangle, size: 30)),
+                Expanded(child: Text(
+                    textAlign: TextAlign.center, "Workout: ${truncateString(getId())}")),
+                IconButton(
+                    onPressed: deleteExercise,
+                    icon: Icon(
+                        color: Theme.of(context).colorScheme.onSecondary,
+                        CupertinoIcons.trash_circle, size: 30)),
+              ]),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: exerciseList.length,
@@ -150,9 +172,8 @@ class _ExerciseItemState extends State<ExerciseItem> {
                   itemCount: setList.length,
                   itemBuilder: (context, index) {
                     return Text(
-                      textAlign: TextAlign.center,
-                        "Reps:${setList[index][0]} Weight:${setList[index][1]}"
-                    );
+                        textAlign: TextAlign.center,
+                        "Reps:${setList[index][0]} Weight:${setList[index][1]}");
                   },
                 )
               ]))

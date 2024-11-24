@@ -3,12 +3,14 @@ import 'package:ctrl_alt_defeat/models/user_repository.dart';
 import 'package:get/get.dart';
 
 class HistoryPresenter {
+  Future<String?> getUserID() async {
+    final userRepo = Get.put(UserRepository());
+    return userRepo.getCurrentUserUID();
+  }
 
   Future<List<String>> getWorkoutIds() async {
-    final userRepo = Get.put(UserRepository());
-    String? userID = userRepo.getCurrentUserUID();
     final userData = FirebaseFirestore.instance.collection('User_Data');
-    final workouts = userData.doc(userID).collection("Workout_Data");
+    final workouts = userData.doc(await getUserID()).collection("Workout_Data");
 
     List<String> workoutList = [];
 
@@ -58,5 +60,10 @@ class HistoryPresenter {
         }
     );
     return setList;
+  }
+
+  void deleteExercise(String workoutId) async {
+    final userId = await getUserID();
+    FirebaseFirestore.instance.collection('User_Data').doc(userId).collection('Workout_Data').doc(workoutId).delete();
   }
 }

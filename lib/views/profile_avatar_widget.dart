@@ -7,8 +7,9 @@ import '../models/user_repository.dart';
 
 class ProfileAvatar extends StatefulWidget{
   final String userID;
+  final double scale;
 
-  const ProfileAvatar({ required this.userID, Key? key}) : super(key:key);
+  const ProfileAvatar({ required this.userID, this.scale = 1, Key? key}) : super(key:key);
 
   @override
   _ProfileAvatarState createState() => _ProfileAvatarState();
@@ -17,6 +18,7 @@ class ProfileAvatar extends StatefulWidget{
 class _ProfileAvatarState extends State<ProfileAvatar> {
   String? profileInitial;
   Color? profileColor;
+
 
   @override
   void initState() {
@@ -43,19 +45,19 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
   @override
   Widget build(BuildContext context){
     if (profileInitial == null || profileColor == null){
-      return const CircleAvatar(
-        radius: 25,
+      return CircleAvatar(
+        radius: 25 * widget.scale,
         backgroundColor: Colors.grey,
         child: CircularProgressIndicator(color: Colors.white),
       );
     }
 
     return CircleAvatar(
-      radius: 25,
+      radius: 25 * widget.scale,
       backgroundColor: profileColor,
       child: Text(
         profileInitial!,
-        style: const TextStyle(color: Colors.white, fontSize: 20),
+        style: TextStyle(color: Colors.white, fontSize: (20 * widget.scale)),
       ),
     );
   }

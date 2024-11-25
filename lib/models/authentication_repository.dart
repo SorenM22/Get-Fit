@@ -18,7 +18,7 @@ class AuthenticationRepository extends GetxController {
     firebaseUser = Rx<User?>(auth.currentUser);
     firebaseUser.bindStream(auth.userChanges());
     ever(firebaseUser, createScreen);
-    // ever(firebaseUser, updateUID); Uncomment if needed for testing if UID is properly retrieved
+    ever(firebaseUser, updateUID);
   }
 
   //sets the landing screen based on if a user is logged in or not
@@ -32,7 +32,6 @@ class AuthenticationRepository extends GetxController {
   //allows us to grab the current user's UID
   updateUID(User? user){
      user == null ? UID = "null" : UID = user.uid;
-     print("UID has changed");
   }
 
 

@@ -24,7 +24,7 @@ class UserRepository extends GetxController{
 
   String? getCurrentUserUID() {
     User? user = AuthenticationRepository.instance.firebaseUser.value;
-    print("grabbing UID");
+    // print("grabbing UID"); Uncomment if you want to verify you are grabbing the UID
     return user?.uid; // This returns null if the user is not logged in
   }
 

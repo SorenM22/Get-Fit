@@ -11,7 +11,7 @@ import 'models/authentication_repository.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
-  final String loginImage = "assets/login_Image/Workout_ClipArt.jpg";
+  final String loginImage = "assets/login_Image/Workout_ClipArt.png";
 
 
   @override

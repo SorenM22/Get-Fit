@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
 class AuthenticationPage extends StatelessWidget {
 
   const AuthenticationPage({Key? key}) : super(key: key);
-  final String loginImage = "assets/login_Image/Workout_ClipArt.jpg";
+  final String loginImage = "assets/login_Image/Workout_ClipArt.png";
   
 
   @override

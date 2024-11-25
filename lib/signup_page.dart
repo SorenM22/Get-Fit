@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key? key}) : super(key: key);
-  final String loginImage = "assets/login_Image/Workout_ClipArt.jpg";
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +36,8 @@ class SignupPage extends StatelessWidget {
 
 
 class signupForm extends StatelessWidget {
+  final String appLogo = "assets/login_Image/Workout_ClipArt.png";
+
   const signupForm ({super.key});
 
 @override
@@ -45,7 +46,7 @@ Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image(image: AssetImage("assets/login_Image/Workout_ClipArt.jpg")),
+        Image(image: AssetImage(appLogo)),
         Text("All fields are required", style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.onPrimary),),
       ],
     );

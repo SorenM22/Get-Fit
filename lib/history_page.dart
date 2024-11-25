@@ -93,10 +93,6 @@ class _WorkoutItemState extends State<WorkoutItem> {
     exerciseList = await historyPresenter.getExercises(getId());
   }
 
-  void pressedEditWorkout() {
-    historyPresenter.editWorkout(widget.id);
-  }
-
   void deleteExercise() {
     historyPresenter.deleteExercise(getId());
     retrieveData();
@@ -113,11 +109,6 @@ class _WorkoutItemState extends State<WorkoutItem> {
                 child: Column(
                     children: [
               Row(children: [
-                IconButton(
-                    onPressed: pressedEditWorkout,
-                    icon: Icon(
-                        color: Theme.of(context).colorScheme.onSecondary,
-                        CupertinoIcons.pencil_ellipsis_rectangle, size: 30)),
                 Expanded(child: Text(
                     textAlign: TextAlign.center, "Workout: ${truncateString(getId())}")),
                 IconButton(
@@ -167,7 +158,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Row(children: [
-              Text(widget.exercise),
+              Text(displayExercise),
               Flexible(
                   child: Column(children: [
                 ListView.builder(

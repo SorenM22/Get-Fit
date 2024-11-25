@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ctrl_alt_defeat/history_page.dart';
 import 'package:ctrl_alt_defeat/models/authentication_repository.dart';
+import 'package:ctrl_alt_defeat/views/profile_avatar_widget.dart';
 import 'package:ctrl_alt_defeat/workout_pref_page.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
@@ -29,20 +30,26 @@ class _MyHomePageState extends State<MyHomePage> {
   final db = FirebaseFirestore.instance.collection("User_Data");
 
   String profileColor = Colors.blue.hex;
+  String profileInitial = 'P';
 
   @override
   void initState() {
-    db.doc(user.getCurrentUserUID()).get().then((grabColor){
-      if(grabColor.get("Profile Color")){
-        profileColor = grabColor.get("Profile Color");
-      } else {
-        db.doc(user.getCurrentUserUID()).set(
-          {'Profile Color': Colors.blue.hex},
-          SetOptions(merge: true),
-        );
-      }
+    //  db.doc(user.getCurrentUserUID()).get().then((grabColor){
+    //       if(grabColor.get("Profile Color")){
+    //         profileColor = grabColor.get("Profile Color");
+    //       } else {
+    //         db.doc(user.getCurrentUserUID()).set(
+    //           {'Profile Color': Colors.blue.hex},
+    //           SetOptions(merge: true),
+    //         );
+    //       }
+    //
+    //     });
 
-    });
+    //  db.doc(user.getCurrentUserUID()).get().then((grabName){
+    //   profileInitial = grabName.get("Name")[0];
+    // });
+
     super.initState();
   }
 
@@ -97,16 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child:  CircleAvatar(
-              radius: 25,
-              backgroundColor: profileColor.toColor, // Circle color
-              child: const Text('P',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-            ),
+            child: ProfileAvatar(),
           ),
         ),
       ),

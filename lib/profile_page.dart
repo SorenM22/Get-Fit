@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ctrl_alt_defeat/models/user_repository.dart';
+import 'package:ctrl_alt_defeat/presenter/profile_avatar_icon_presenter.dart';
+import 'package:ctrl_alt_defeat/views/profile_avatar_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
@@ -9,6 +11,7 @@ import 'package:ctrl_alt_defeat/ThemeController.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key,required this.title});
   final String title;
+
   @override
   State<ProfilePage> createState() => _MyProfilePageState();
 }
@@ -17,6 +20,8 @@ class _MyProfilePageState extends State<ProfilePage> {
   final user = Get.put(UserRepository());
   final db = FirebaseFirestore.instance.collection("User_Data");
   Color selectedColor = Colors.blue;
+
+  final profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
@@ -75,6 +80,7 @@ class _MyProfilePageState extends State<ProfilePage> {
                     {'Profile Color': selectedColor.hex},
                     SetOptions(merge: true),
                   );
+                  profileController.fetchProfileData();
               },
               child: Text(
                 'OK',
@@ -110,17 +116,18 @@ class _MyProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: selectedColor, // Circle color
-              child: const Text(
-                'P',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40,
-                ),
-              ),
-            ),
+            // CircleAvatar(
+            //   radius: 50,
+            //   backgroundColor: selectedColor, // Circle color
+            //   child: const Text(
+            //     'P',
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //       fontSize: 40,
+            //     ),
+            //   ),
+            // )
+              ProfileAvatar(scale: 2,),
             Text(
               'Profile',
               style: TextStyle(

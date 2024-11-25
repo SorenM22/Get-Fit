@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
 class AuthenticationPage extends StatelessWidget {
 
   const AuthenticationPage({Key? key}) : super(key: key);
-  final String loginImage = "assets/login_Image/Workout_ClipArt.png";
+  final String appLogo = "assets/login_Image/Workout_ClipArt.png";
   
 
   @override
@@ -56,7 +56,7 @@ class AuthenticationPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image(image: AssetImage(loginImage), height: height * 0.35),
+              Image(image: AssetImage(appLogo), height: height * 0.35),
                const Column(
                   children: [
                    Text("Welcome to MyFit!", textAlign: TextAlign.center, style: TextStyle(fontSize: 40),),

@@ -79,6 +79,7 @@ flutter:
   assets:
     - assets/login_Image/Workout_ClipArt.jpg
     - assets/login_Image/Google_Logo.png
+    - assets/login_Image/Workout_ClipArt.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,3 +1,4 @@
+import 'package:ctrl_alt_defeat/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,8 @@ class _WorkoutItemState extends State<WorkoutItem> {
     print("done");
   }
 
-  void editWorkout() {
+  void pressedEditWorkout() {
+    historyPresenter.editWorkout(widget.id);
   }
 
   void deleteExercise() {
@@ -114,7 +116,7 @@ class _WorkoutItemState extends State<WorkoutItem> {
                     children: [
               Row(children: [
                 IconButton(
-                    onPressed: editWorkout,
+                    onPressed: pressedEditWorkout,
                     icon: Icon(
                         color: Theme.of(context).colorScheme.onSecondary,
                         CupertinoIcons.pencil_ellipsis_rectangle, size: 30)),

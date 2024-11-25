@@ -11,9 +11,11 @@ import 'profile_page.dart';
 
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
-  final String title;
+  MyHomePage._();
+
+  static final instance = MyHomePage._();
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -75,7 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.onSurface,
-        title: Text(widget.title, style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
         leading: PopupMenuButton<String>(
           onSelected: (value) {
             if (value == 'profile') {

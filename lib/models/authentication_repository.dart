@@ -25,7 +25,7 @@ class AuthenticationRepository extends GetxController {
   createScreen(User? user) {
     final themeController = Get.put(ThemeController());
     themeController.getTheme();
-    user == null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => const MyHomePage(title: "Home Page"));
+    user == null ? Get.offAll(() => const AuthenticationPage()) : Get.offAll(() => MyHomePage.instance);
 
   }
 

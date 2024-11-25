@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ctrl_alt_defeat/models/user_repository.dart';
 import 'package:get/get.dart';
+import 'package:ctrl_alt_defeat/home_page.dart';
 
 class HistoryPresenter {
   Future<String?> getUserID() async {
@@ -65,5 +66,9 @@ class HistoryPresenter {
   void deleteExercise(String workoutId) async {
     final userId = await getUserID();
     FirebaseFirestore.instance.collection('User_Data').doc(userId).collection('Workout_Data').doc(workoutId).delete();
+  }
+
+  void editWorkout(String id) {
+    var instance = MyHomePage.instance;
   }
 }

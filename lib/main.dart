@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light, // Reactive theme change
-        home: const MyHomePage(title: 'GetFit'),
+        home: MyHomePage.instance,
       );
     });
   }

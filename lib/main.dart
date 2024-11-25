@@ -1,4 +1,5 @@
 import 'package:ctrl_alt_defeat/models/user_repository.dart';
+import 'package:ctrl_alt_defeat/presenter/profile_avatar_icon_presenter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ctrl_alt_defeat/home_page.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final profileController = Get.put(ProfileController());
+    profileController.fetchProfileData();
+
     final themeController = Get.find<ThemeController>();
 
     return Obx(() {

@@ -4,63 +4,43 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../models/user_repository.dart';
+import '../presenter/profile_avatar_icon_presenter.dart';
 
-class ProfileAvatar extends StatefulWidget {
-  final String userID;
+
+class ProfileAvatar extends StatelessWidget {
   final double scale;
 
-  const ProfileAvatar({required this.userID, this.scale = 1, Key? key}) : super(key: key);
-
-  @override
-  ProfileAvatarState createState() => ProfileAvatarState();
-}
-
-class ProfileAvatarState extends State<ProfileAvatar> {
-  String? profileInitial;
-  Color? profileColor;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchProfileData();
-  }
-
-  Future<void> fetchProfileData() async {
-    final user = Get.put(UserRepository());
-    try {
-      final initial = await user.getCurrentProfileInitial();
-      final color = await user.getCurrentProfileColor();
-
-      setState(() {
-        profileInitial = initial;
-        profileColor = color;
-      });
-    } catch (e){
-      print("Error fetching profile data: $e");
-    }
-  }
-
-  void refresh() {
-    fetchProfileData(); // Much needed Public method to re-fetch data
-  }
+  const ProfileAvatar({
+    this.scale = 1,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (profileInitial == null || profileColor == null) {
-      return CircleAvatar(
-        radius: 25 * widget.scale,
-        backgroundColor: Colors.grey,
-        child: const CircularProgressIndicator(color: Colors.white),
-      );
-    }
+    // Access the ProfileController
+    final profileController = Get.find<ProfileController>();
 
-    return CircleAvatar(
-      radius: 25 * widget.scale,
-      backgroundColor: profileColor,
-      child: Text(
-        profileInitial!,
-        style: TextStyle(color: Colors.white, fontSize: (20 * widget.scale)),
-      ),
-    );
+    return Obx(() {
+      // Rebuild widget when profileInitial or profileColor changes
+      if (profileController.profileInitial.isEmpty) {
+        return CircleAvatar(
+          radius: 25 * scale,
+          backgroundColor: Colors.grey,
+          child: const CircularProgressIndicator(color: Colors.white),
+        );
+      }
+
+      return CircleAvatar(
+        radius: 25 * scale,
+        backgroundColor: profileController.profileColor.value,
+        child: Text(
+          profileController.profileInitial.value,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: (20 * scale),
+          ),
+        ),
+      );
+    });
   }
 }

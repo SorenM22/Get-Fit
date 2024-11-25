@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ctrl_alt_defeat/entry_form.dart';
 import 'package:ctrl_alt_defeat/models/user_repository.dart';
+import 'package:ctrl_alt_defeat/presenter/profile_avatar_icon_presenter.dart';
 import 'package:ctrl_alt_defeat/views/profile_avatar_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _MyProfilePageState extends State<ProfilePage> {
   final db = FirebaseFirestore.instance.collection("User_Data");
   Color selectedColor = Colors.blue;
 
-  final _avatarKey = GlobalKey<ProfileAvatarState>();
+  final profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
@@ -80,7 +81,7 @@ class _MyProfilePageState extends State<ProfilePage> {
                     {'Profile Color': selectedColor.hex},
                     SetOptions(merge: true),
                   );
-                  _avatarKey.currentState?.refresh();
+                  profileController.fetchProfileData();
               },
               child: Text(
                 'OK',
@@ -127,7 +128,7 @@ class _MyProfilePageState extends State<ProfilePage> {
             //     ),
             //   ),
             // )
-              ProfileAvatar(userID: user.getCurrentUserUID()!, scale: 2, key: _avatarKey),
+              ProfileAvatar(scale: 2,),
             Text(
               'Profile',
               style: TextStyle(

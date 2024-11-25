@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ProfileAvatar(userID: user.getCurrentUserUID()!),
+            child: ProfileAvatar(),
           ),
         ),
       ),

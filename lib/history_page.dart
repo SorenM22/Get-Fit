@@ -1,4 +1,3 @@
-import 'package:ctrl_alt_defeat/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +69,7 @@ class _HistoryPageState extends State<HistoryPageImplementation> {
 }
 
 class WorkoutItem extends StatefulWidget {
-  WorkoutItem({super.key, required this.id});
+  const WorkoutItem({super.key, required this.id});
   final String id;
 
   @override
@@ -92,7 +91,6 @@ class _WorkoutItemState extends State<WorkoutItem> {
 
   Future<void> retrieveData() async {
     exerciseList = await historyPresenter.getExercises(getId());
-    print("done");
   }
 
   void pressedEditWorkout() {
@@ -138,25 +136,28 @@ class _WorkoutItemState extends State<WorkoutItem> {
               )
             ]));
           }
-          return Text("Loading");
+          return const Text("Loading");
         });
   }
 }
 
 class ExerciseItem extends StatefulWidget {
-  ExerciseItem({super.key, this.id, this.exercise});
-  final id;
-  final exercise;
+  const ExerciseItem({super.key, required this.id, required this.exercise});
+  final String id;
+  final String exercise;
 
   @override
   State<ExerciseItem> createState() => _ExerciseItemState();
 }
 
 class _ExerciseItemState extends State<ExerciseItem> {
-  var setList;
+  List<List<int>> setList = [];
+
+  String displayExercise = "";
 
   Future<void> retrieveData() async {
     setList = await historyPresenter.getSets(widget.id, widget.exercise);
+    displayExercise = await historyPresenter.getExerciseName(widget.id, widget.exercise);
   }
 
   @override
@@ -181,7 +182,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
               ]))
             ]);
           }
-          return Text("Loading");
+          return const Text("Loading");
         });
   }
 }

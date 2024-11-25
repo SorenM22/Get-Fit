@@ -63,6 +63,22 @@ class HistoryPresenter {
     return setList;
   }
 
+  Future<String> getExerciseName(String workoutID, String exerciseID) async {
+    final userRepo = Get.put(UserRepository());
+    String? userID = userRepo.getCurrentUserUID();
+    final userData = FirebaseFirestore.instance.collection('User_Data');
+    final workouts = userData.doc(userID).collection("Workout_Data");
+
+    var exerciseName = "sahjfjskdjhglkjagh";
+
+    await workouts.doc(workoutID).collection('Exercises').doc(exerciseID).get().then(
+        (DocumentSnapshot documentSnapshot) {
+          exerciseName = documentSnapshot.data().toString();
+        }
+    );
+    return exerciseName;
+  }
+
   void deleteExercise(String workoutId) async {
     final userId = await getUserID();
     FirebaseFirestore.instance.collection('User_Data').doc(userId).collection('Workout_Data').doc(workoutId).delete();

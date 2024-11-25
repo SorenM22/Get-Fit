@@ -67,7 +67,6 @@ class _LiftingWidget extends State<LiftingWidget> {
   }
 
   void populateMenu() {
-    List<String>;
     databaseReference.collection('Exercise_Types').doc('Lifting_Exercises').get().then(
             (DocumentSnapshot doc) {
               final data = doc.data() as Map<String, dynamic>;
@@ -249,6 +248,9 @@ class _LiftingWidget extends State<LiftingWidget> {
                                                 actions: <Widget>[
                                                   TextButton(
                                                     onPressed: () => Navigator.pop(context, 'OK'),
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                                    ),
                                                     child: const Text('OK'),
                                                   ),
                                                 ],
@@ -263,6 +265,9 @@ class _LiftingWidget extends State<LiftingWidget> {
                                                 actions: <Widget>[
                                                   TextButton(
                                                     onPressed: () => Navigator.pop(context, 'OK'),
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                                    ),
                                                     child: const Text('OK'),
                                                   ),
                                                 ],

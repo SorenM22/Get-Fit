@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'exercise_widget.dart';
+import 'cardio_widget.dart';
 
 class WorkoutInputPage extends StatelessWidget {
   const WorkoutInputPage({super.key});
@@ -55,7 +56,7 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
 
   //_WorkoutInputPageState(this.workoutRef, {super.key});
 
-  List<LiftingWidget> exercises = [];
+  List<Widget> exercises = [];
 
   @override
   void initState() {
@@ -73,15 +74,20 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
   }
 
 
-  void addExercise() {
-
+  void addExercise(String type) {
     Map<String, int> data = {};
     workoutRef.doc(exercises.length.toString()).set(data);
 
     DocumentReference<Map<String, dynamic>> exerciseRef =
     workoutRef.doc(exercises.length.toString());
 
-    exercises.add(LiftingWidget(exerciseRef));
+    if(type == 'Lifting') {
+      exercises.add(LiftingWidget(exerciseRef));
+    } else if(type == 'Cardio') {
+      exercises.add(CardioWidget(exerciseRef));
+    }
+
+
 
     setState(() {});
   }
@@ -120,7 +126,39 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
                           style: TextStyle(fontSize: 30))),
                   Flexible(
                       child: IconButton(
-                          onPressed: addExercise,
+                          onPressed: () async {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Select Type'),
+                                  content: const Text('Select which type of exercise you would like to add to your workout'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, 'Lifting');
+                                        addExercise('Lifting');
+                                      },
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                      ),
+                                      child: const Text('Lifting'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, 'Cardio');
+                                        addExercise('Cardio');
+                                      },
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                      ),
+                                      child: const Text('Cardio'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                          },
+
+
                           icon: const Icon(
                               CupertinoIcons.plus_circle,
                               size: 40))),

@@ -55,7 +55,7 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
 
   //_WorkoutInputPageState(this.workoutRef, {super.key});
 
-  List<ExerciseWidget> exercises = [];
+  List<LiftingWidget> exercises = [];
 
   @override
   void initState() {
@@ -78,20 +78,10 @@ class _WorkoutInputPageState extends State<WorkoutInputPageImplementation> {
     Map<String, int> data = {};
     workoutRef.doc(exercises.length.toString()).set(data);
 
-    CollectionReference<Map<String, dynamic>> exerciseRef =
-    workoutRef.doc(exercises.length.toString()).collection('Sets');
+    DocumentReference<Map<String, dynamic>> exerciseRef =
+    workoutRef.doc(exercises.length.toString());
 
-    Color color;
-    int colorOption;
-    if(exercises.length % 2 == 0) {
-      colorOption = 0;
-      color = Theme.of(context).colorScheme.onPrimaryContainer;
-    } else {
-      colorOption = 1;
-      color = Theme.of(context).colorScheme.primary;
-    }
-
-    exercises.add(ExerciseWidget(exerciseRef));
+    exercises.add(LiftingWidget(exerciseRef));
 
     setState(() {});
   }

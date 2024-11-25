@@ -1,27 +1,25 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 
-class ExerciseWidget extends StatefulWidget {
+class LiftingWidget extends StatefulWidget {
 
-  CollectionReference<Map<String, dynamic>> exerciseRef;
+  DocumentReference<Map<String, dynamic>> exerciseRef;
 
-  ExerciseWidget(this.exerciseRef, {super.key});
+  LiftingWidget(this.exerciseRef, {super.key});
 
   @override
-  State<ExerciseWidget> createState() => _ExerciseWidget(exerciseRef);
+  State<LiftingWidget> createState() => _LiftingWidget(exerciseRef);
 
 }
 
-class _ExerciseWidget extends State<ExerciseWidget> {
+class _LiftingWidget extends State<LiftingWidget> {
 
   //DocumentReference<Map<String, dynamic>> workoutRef;
-  CollectionReference<Map<String, dynamic>> exerciseRef;
+  DocumentReference<Map<String, dynamic>> exerciseRef;
 
-  _ExerciseWidget(this.exerciseRef) {
+  _LiftingWidget(this.exerciseRef) {
     populateMenu();
     updateLocalData();
   }
@@ -120,10 +118,8 @@ class _ExerciseWidget extends State<ExerciseWidget> {
       _spaceBefore = (character == ' ');
     });
 
-
     value = tempValue;
     print(value);
-
 
     if(optionList.contains(value)) {
       return false;
@@ -136,20 +132,22 @@ class _ExerciseWidget extends State<ExerciseWidget> {
     }
   }
 
-  void updateDatabase() async{
-    QuerySnapshot snap = await exerciseRef.get();
+  void updateDatabase() async {
+    QuerySnapshot snap = await exerciseRef.collection('Sets').get();
     final allData = snap.docs.map((doc) => doc.data());
+
+    exerciseRef.set({'Type': titleText});
 
     for (int i = allData.length; i < sets.length; i++) {
       int setReps = sets[i].reps;
       int setWeight = sets[i].weight;
       Map<String, int> data = {'Reps': setReps, 'Weight': setWeight };
-      exerciseRef.doc('$i').set(data);
+      exerciseRef.collection('Sets').doc('$i').set(data);
     }
   }
 
   Future<void> updateLocalData() async{
-    QuerySnapshot snap = await exerciseRef.get();
+    QuerySnapshot snap = await exerciseRef.collection('Sets').get();
     final allData = snap.docs.map((doc) => doc.data());
 
     for (final e in allData) {
@@ -407,6 +405,7 @@ class SetWidget extends StatelessWidget {
   }
 }
 
+
 Future<void> main() async {
   runApp(const MyApp());
 }
@@ -458,8 +457,7 @@ class _MyHomePageState extends State<MyHomePage> {
       .collection('Workout_Data')
       .doc('test')
       .collection('Exercises')
-      .doc('Test_Exercise')
-      .collection('Sets');
+      .doc('Test_Exercise');
 
   @override
   Widget build(BuildContext context) {
@@ -471,7 +469,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget> [
-            ExerciseWidget(exerciseRef),
+            LiftingWidget(exerciseRef),
           ],
         ),
       ),

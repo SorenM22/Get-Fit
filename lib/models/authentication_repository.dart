@@ -32,7 +32,6 @@ class AuthenticationRepository extends GetxController {
   //allows us to grab the current user's UID
   updateUID(User? user){
      user == null ? UID = "null" : UID = user.uid;
-     print("UID has changed");
   }
 
 

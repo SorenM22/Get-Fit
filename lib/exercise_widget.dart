@@ -1,35 +1,31 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 
-class ExerciseWidget extends StatefulWidget {
+class LiftingWidget extends StatefulWidget {
 
-  CollectionReference<Map<String, dynamic>> exerciseRef;
-  Color color;
+  DocumentReference<Map<String, dynamic>> exerciseRef;
 
-  ExerciseWidget(this.exerciseRef, this.color, {super.key});
+  LiftingWidget(this.exerciseRef, {super.key});
 
   @override
-  State<ExerciseWidget> createState() => _ExerciseWidget(exerciseRef, color);
+  State<LiftingWidget> createState() => _LiftingWidget(exerciseRef);
 
 }
 
-class _ExerciseWidget extends State<ExerciseWidget> {
+class _LiftingWidget extends State<LiftingWidget> {
 
   //DocumentReference<Map<String, dynamic>> workoutRef;
-  CollectionReference<Map<String, dynamic>> exerciseRef;
+  DocumentReference<Map<String, dynamic>> exerciseRef;
 
-  _ExerciseWidget(this.exerciseRef, this.widgetColor) {
+  _LiftingWidget(this.exerciseRef) {
     populateMenu();
     updateLocalData();
   }
 
   final databaseReference = FirebaseFirestore.instance;
 
-  Color widgetColor;
   String titleText = 'Exercise';
   bool _open = true;
   bool _newExercise = false;
@@ -65,7 +61,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
     // sets = [SetWidget(int.parse(reps), int.parse(weight), widgetColor)];
     // sets.addAll(temp);
 
-    sets.add( SetWidget(int.parse(reps), int.parse(weight), widgetColor) );
+    sets.add( SetWidget(int.parse(reps), int.parse(weight) ));
     updateDatabase();
     setState(() {});
   }
@@ -122,10 +118,8 @@ class _ExerciseWidget extends State<ExerciseWidget> {
       _spaceBefore = (character == ' ');
     });
 
-
     value = tempValue;
     print(value);
-
 
     if(optionList.contains(value)) {
       return false;
@@ -138,20 +132,22 @@ class _ExerciseWidget extends State<ExerciseWidget> {
     }
   }
 
-  void updateDatabase() async{
-    QuerySnapshot snap = await exerciseRef.get();
+  void updateDatabase() async {
+    QuerySnapshot snap = await exerciseRef.collection('Sets').get();
     final allData = snap.docs.map((doc) => doc.data());
+
+    exerciseRef.set({'Type': titleText});
 
     for (int i = allData.length; i < sets.length; i++) {
       int setReps = sets[i].reps;
       int setWeight = sets[i].weight;
       Map<String, int> data = {'Reps': setReps, 'Weight': setWeight };
-      exerciseRef.doc('$i').set(data);
+      exerciseRef.collection('Sets').doc('$i').set(data);
     }
   }
 
   Future<void> updateLocalData() async{
-    QuerySnapshot snap = await exerciseRef.get();
+    QuerySnapshot snap = await exerciseRef.collection('Sets').get();
     final allData = snap.docs.map((doc) => doc.data());
 
     for (final e in allData) {
@@ -163,10 +159,6 @@ class _ExerciseWidget extends State<ExerciseWidget> {
     }
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -176,7 +168,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
             Container(
               height: 50,
               width: boxWidth,
-              color: widgetColor,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
@@ -195,7 +187,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
                     Container(
-                      color: widgetColor,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                       height: 50,
                       width: boxWidth,
                       child: Column(
@@ -225,7 +217,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                     Visibility(
                       visible: _newExercise,
                       child: Container(
-                        color: widgetColor,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                         height: 75,
                         width: boxWidth,
                         child: Column(
@@ -289,7 +281,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                       ),
                     ),
                     Container(
-                      color: widgetColor,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                       height: 90,
                       width: boxWidth,
                       child: Column(
@@ -353,7 +345,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
             Visibility(
                 visible: (_open && sets.isNotEmpty),
                 child: Container(
-                  color: widgetColor,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                   width: boxWidth,
                   height: 25,
                   child:Column(
@@ -368,7 +360,7 @@ class _ExerciseWidget extends State<ExerciseWidget> {
               visible: _open,
               child: Flexible(
                 child: Container(
-                  color: widgetColor,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                   width: boxWidth,
                   child: ListView.builder(
                       shrinkWrap: true,
@@ -378,6 +370,12 @@ class _ExerciseWidget extends State<ExerciseWidget> {
                 ),
               ),
             ),
+
+            Container(
+              color: Theme.of(context).colorScheme.primary,
+              width: boxWidth,
+              height: 10,
+            )
 
           ],
         );
@@ -390,16 +388,15 @@ class SetWidget extends StatelessWidget {
 
   int reps = 0;
   int weight = 0;
-  Color color;
 
-  SetWidget(this.reps, this.weight, this.color, {super.key});
+  SetWidget(this.reps, this.weight, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Flexible(
         child: Container(
-          color: color,
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
           height: 25,
           child: Text('$reps reps of $weight lbs'),
         ),
@@ -407,6 +404,7 @@ class SetWidget extends StatelessWidget {
     );
   }
 }
+
 
 Future<void> main() async {
   runApp(const MyApp());
@@ -459,8 +457,7 @@ class _MyHomePageState extends State<MyHomePage> {
       .collection('Workout_Data')
       .doc('test')
       .collection('Exercises')
-      .doc('Test_Exercise')
-      .collection('Sets');
+      .doc('Test_Exercise');
 
   @override
   Widget build(BuildContext context) {
@@ -472,7 +469,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget> [
-            ExerciseWidget(exerciseRef, Color(0xffD4D2D5)),
+            LiftingWidget(exerciseRef),
           ],
         ),
       ),

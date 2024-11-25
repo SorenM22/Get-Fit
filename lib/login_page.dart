@@ -11,7 +11,7 @@ import 'models/authentication_repository.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
-  final String loginImage = "assets/login_Image/Workout_ClipArt.jpg";
+  final String appLogo = "assets/login_Image/Workout_ClipArt.png";
 
 
   @override
@@ -35,7 +35,7 @@ class LoginPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image(image: AssetImage(loginImage), height: height * 0.2,),
+                Image(image: AssetImage(appLogo), height: height * 0.2,),
                 const Text("MyFit", style: TextStyle(fontSize: 35),),
                 const Text("please login", style: TextStyle(fontSize: 15),),
 

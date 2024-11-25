@@ -5,29 +5,27 @@ import 'package:get/get.dart';
 
 import '../models/user_repository.dart';
 
-class ProfileAvatar extends StatefulWidget{
+class ProfileAvatar extends StatefulWidget {
   final String userID;
   final double scale;
 
-  const ProfileAvatar({ required this.userID, this.scale = 1, Key? key}) : super(key:key);
+  const ProfileAvatar({required this.userID, this.scale = 1, Key? key}) : super(key: key);
 
   @override
-  _ProfileAvatarState createState() => _ProfileAvatarState();
+  ProfileAvatarState createState() => ProfileAvatarState();
 }
 
-class _ProfileAvatarState extends State<ProfileAvatar> {
+class ProfileAvatarState extends State<ProfileAvatar> {
   String? profileInitial;
   Color? profileColor;
-
 
   @override
   void initState() {
     super.initState();
-    _fetchProfileData();
+    fetchProfileData();
   }
 
-
-  Future<void> _fetchProfileData() async {
+  Future<void> fetchProfileData() async {
     final user = Get.put(UserRepository());
     try {
       final initial = await user.getCurrentProfileInitial();
@@ -42,13 +40,17 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
     }
   }
 
+  void refresh() {
+    fetchProfileData(); // Much needed Public method to re-fetch data
+  }
+
   @override
-  Widget build(BuildContext context){
-    if (profileInitial == null || profileColor == null){
+  Widget build(BuildContext context) {
+    if (profileInitial == null || profileColor == null) {
       return CircleAvatar(
         radius: 25 * widget.scale,
         backgroundColor: Colors.grey,
-        child: CircularProgressIndicator(color: Colors.white),
+        child: const CircularProgressIndicator(color: Colors.white),
       );
     }
 

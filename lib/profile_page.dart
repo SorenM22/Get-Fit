@@ -11,6 +11,7 @@ import 'package:ctrl_alt_defeat/ThemeController.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key,required this.title});
   final String title;
+
   @override
   State<ProfilePage> createState() => _MyProfilePageState();
 }
@@ -19,6 +20,8 @@ class _MyProfilePageState extends State<ProfilePage> {
   final user = Get.put(UserRepository());
   final db = FirebaseFirestore.instance.collection("User_Data");
   Color selectedColor = Colors.blue;
+
+  final _avatarKey = GlobalKey<ProfileAvatarState>();
 
   @override
   void initState() {
@@ -77,6 +80,7 @@ class _MyProfilePageState extends State<ProfilePage> {
                     {'Profile Color': selectedColor.hex},
                     SetOptions(merge: true),
                   );
+                  _avatarKey.currentState?.refresh();
               },
               child: Text(
                 'OK',
@@ -123,7 +127,7 @@ class _MyProfilePageState extends State<ProfilePage> {
             //     ),
             //   ),
             // )
-              ProfileAvatar(userID: user.getCurrentUserUID()!, scale: 2,),
+              ProfileAvatar(userID: user.getCurrentUserUID()!, scale: 2, key: _avatarKey),
             Text(
               'Profile',
               style: TextStyle(
